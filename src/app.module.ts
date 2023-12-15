@@ -7,6 +7,7 @@ import neo4jConfig from './config/neo4j.config';
 import telegramConfig from './config/telegram.config';
 import validationSchema from './config/configs.schema';
 import { NestjsGrammyModule } from '@grammyjs/nestjs';
+import { BotModule } from './bot/bot.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { NestjsGrammyModule } from '@grammyjs/nestjs';
       }),
       inject: [ConfigService],
     }),
+    BotModule,
   ],
   controllers: [AppController],
   providers: [AppService],
