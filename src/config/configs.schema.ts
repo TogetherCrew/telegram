@@ -12,5 +12,7 @@ export default Joi.object({
   NEO4J_USERNAME: Joi.string().required(),
   NEO4J_PASSWORD: Joi.string().required(),
 
-  TELEGRAM_TOKEN: Joi.string().required(),
+  API_ID: Joi.number().required(),
+  API_HASH: Joi.string().required(),
+  SESSION: Joi.string().required(),
 });
