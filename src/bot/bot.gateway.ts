@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { BotService } from './bot.service';
 
 const groupNewTextMessageMetaKeyPrefix = 'GroupNewTextMessage';
@@ -33,5 +34,8 @@ function OnGroupEditedTextMessage(text?: string) {
 
 @Injectable()
 export class BotGateway {
-  constructor(private botService: BotService) {}
+  constructor(
+    private botService: BotService,
+    private configService: ConfigService,
+  ) {}
 }
