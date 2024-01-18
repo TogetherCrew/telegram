@@ -46,6 +46,9 @@ export class BotGateway {
     private botService: BotService,
     private configService: ConfigService,
   ) {
+    const environment = configService.get('base.environment');
+    if (environment != 'development' && environment != 'production') return;
+
     const sessionString = configService.get('telegram.session');
     const apiId = configService.get('telegram.apiId');
     const apiHash = configService.get('telegram.apiHash');

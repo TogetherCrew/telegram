@@ -1,12 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BotGateway } from './bot.gateway';
+import { BotService } from './bot.service';
+import { ConfigModule } from '@nestjs/config';
 
 describe('BotGateway', () => {
   let gateway: BotGateway;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BotGateway],
+      imports: [ConfigModule],
+      providers: [BotGateway, BotService],
     }).compile();
 
     gateway = module.get<BotGateway>(BotGateway);
