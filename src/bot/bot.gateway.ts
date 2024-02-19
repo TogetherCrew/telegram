@@ -155,11 +155,11 @@ export class BotGateway {
 
   @OnGroupNewTextMessage()
   onGroupNewTextMessage(update: NewMessageEvent) {
-    console.log('onGroupNewTextMessage', update.message.text);
+    this.botService.addNewTextMessage(update.message);
   }
 
   @OnGroupEditedTextMessage()
   onGroupEditedTextMessage(update: NewMessageEvent) {
-    console.log('onGroupEditedTextMessage', update.message.text);
+    this.botService.ReplaceNewTextMessage(update.message);
   }
 }
