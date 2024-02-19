@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { Api } from 'telegram';
-import { flatMap } from 'utils/helper';
+import { flatMap } from '../utils/helper';
 
 @Injectable()
 export class BotService {
