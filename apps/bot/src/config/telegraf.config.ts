@@ -1,5 +1,5 @@
 export default (): Record<string, unknown> => ({
-  telegram: {
+  telegraf: {
     token: process.env.TELEGRAF_TOKEN,
   },
 });
