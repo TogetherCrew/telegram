@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TelegrafModule } from 'nestjs-telegraf';
 import { BotUpdate } from './bot.update';
-import { allowedUpdates } from './constants';
 import {
   schemaConfig,
   telegrafConfig,
@@ -11,6 +9,8 @@ import {
   RmqModule,
 } from '@app/common';
 import { Queues, Services } from '@app/common';
+import { NestjsGrammyModule } from '@grammyjs/nestjs';
+import { API_CONSTANTS } from 'grammy';
 
 @Module({
   imports: [
@@ -19,19 +19,19 @@ import { Queues, Services } from '@app/common';
       load: [telegrafConfig, rmqConfig],
       isGlobal: true,
     }),
-    TelegrafModule.forRootAsync({
-      imports: [ConfigModule.forFeature(telegrafConfig)],
-      useFactory: (configService: ConfigService) => ({
-        token: configService.get<string>('telegraf.token'),
-        launchOptions: {
-          allowedUpdates,
-        },
-      }),
-      inject: [ConfigService],
-    }),
     RmqModule.register({
       name: Services.EventStore,
       queue: Queues.EventStore,
+    }),
+    NestjsGrammyModule.forRootAsync({
+      imports: [ConfigModule.forFeature(telegrafConfig)],
+      useFactory: (configService: ConfigService) => ({
+        token: configService.get<string>('telegram.token'),
+        pollingOptions: {
+          allowed_updates: API_CONSTANTS.ALL_UPDATE_TYPES,
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
   providers: [BotService, BotUpdate],

@@ -5,5 +5,5 @@ export * from './rmq/rmq.service';
 export * from './rmq/rmq.module';
 export * from './config/schema.config';
 export * from './config/rmq.config';
-export * from './config/telegraf.config';
+export * from './config/telegram.config';
 export * from './config/mongo.config';

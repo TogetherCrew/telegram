@@ -1,11 +1,17 @@
-import { Update, Ctx, Start, On, Message } from 'nestjs-telegraf';
-import { Context } from 'telegraf';
+import {
+  Update as UpdateControllerDecorator,
+  Ctx,
+  Start,
+  On,
+  Message as MessageDecorator,
+} from '@grammyjs/nestjs';
 import { BotService } from './bot.service';
-import { EditedMessage } from './decorators/editedMessage.decorator';
-import { ChatMemberUpdated } from './decorators/chatMemberUpdated.decorator';
-import { MessageReaction } from './decorators/messageReaction.decorator';
+import { UpdateDecorator } from './decorators/update.decorator';
+import { Events } from '@app/common';
+import { Message, Update } from 'grammy/types';
+import { Context } from 'grammy';
 
-@Update()
+@UpdateControllerDecorator()
 export class BotUpdate {
   constructor(private readonly botService: BotService) {}
 
@@ -14,23 +20,26 @@ export class BotUpdate {
     await ctx.reply('Hello');
   }
 
-  @On('message')
-  async message(@Message() message) {
+  @On(Events.Message)
+  async message(@MessageDecorator() message: Message) {
+    console.log(message);
     this.botService.message(message);
   }
 
-  @On('edited_message')
-  async edited_message(@EditedMessage() editedMessage) {
+  @On(Events.EditedMessage)
+  async edited_message(@UpdateDecorator() editedMessage: Update) {
+    console.log(editedMessage);
     this.botService.edited_message(editedMessage);
   }
 
-  @On('message_reaction')
-  async message_reaction(@MessageReaction() messageReaction) {
+  @On(Events.MessageReaction)
+  async message_reaction(@UpdateDecorator() messageReaction: Update) {
+    console.log(messageReaction);
     this.botService.message_reaction(messageReaction);
   }
 
-  @On('chat_member')
-  async chat_member(@ChatMemberUpdated() chatMember) {
+  @On(Events.ChatMemberUpdated)
+  async chat_member(@UpdateDecorator() chatMember: Update) {
     console.log(chatMember);
     this.botService.chat_member(chatMember);
   }

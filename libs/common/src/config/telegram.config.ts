@@ -1,5 +1,5 @@
 export const telegrafConfig = (): Record<string, unknown> => ({
-  telegraf: {
-    token: process.env.TELEGRAF_TOKEN,
+  telegram: {
+    token: process.env.TELEGRAM_TOKEN,
   },
 });

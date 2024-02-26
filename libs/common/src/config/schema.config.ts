@@ -6,7 +6,7 @@ export const schemaConfig = Joi.object({
   RMQ_USER: Joi.string().required(),
   RMQ_PASS: Joi.string().required(),
 
-  TELEGRAF_TOKEN: Joi.string().required(),
+  TELEGRAM_TOKEN: Joi.string().required(),
 
   MONGO_HOST: Joi.string().required(),
   MONGO_PORT: Joi.number().default(27017),
