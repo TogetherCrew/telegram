@@ -17,8 +17,29 @@ export class EventsController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log(data);
+    console.log('message', data);
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    channel.ack(originalMsg);
+  }
 
+  @MessagePattern(Events.EditedMessage)
+  async edited_message(
+    @Payload() data: any,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    console.log('edited_message', data);
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    channel.ack(originalMsg);
+  }
+
+  @MessagePattern(Events.MessageReaction)
+  async message_reaction(
+    @Payload() data: any,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    console.log('message_reaction', JSON.stringify(data));
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     channel.ack(originalMsg);
