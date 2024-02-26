@@ -13,18 +13,18 @@ export class BotUpdate {
     await ctx.reply('Hello');
   }
 
-  @On('message_reaction')
-  async message_reaction(@MessageReaction() reaction) {
-    console.log('message_reaction', reaction);
-  }
-
   @On('message')
   async message(@Message() message) {
-    console.log('message', message);
+    this.botService.message(message);
   }
 
   @On('edited_message')
-  async edited_message(@EditedMessage() message) {
-    console.log('edited_message', message);
+  async edited_message(@EditedMessage() editedMessage) {
+    this.botService.edited_message(editedMessage);
+  }
+
+  @On('message_reaction')
+  async message_reaction(@MessageReaction() messageReaction) {
+    this.botService.message_reaction(messageReaction);
   }
 }
