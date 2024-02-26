@@ -17,7 +17,11 @@ export class EventsController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log('message', data);
+    const chat_id = data.chat.id;
+    const ts = data.date;
+
+    await this.eventsService.createEvent(ts, chat_id, Events.Message, data);
+
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     channel.ack(originalMsg);
@@ -28,7 +32,16 @@ export class EventsController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log('edited_message', data);
+    const chat_id = data.edited_message.chat.id;
+    const ts = data.edited_message.date;
+
+    await this.eventsService.createEvent(
+      ts,
+      chat_id,
+      Events.EditedMessage,
+      data,
+    );
+
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     channel.ack(originalMsg);
@@ -39,7 +52,16 @@ export class EventsController {
     @Payload() data: any,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log('message_reaction', JSON.stringify(data));
+    const chat_id = data.message_reaction.chat.id;
+    const ts = data.message_reaction.date;
+
+    await this.eventsService.createEvent(
+      ts,
+      chat_id,
+      Events.MessageReaction,
+      data,
+    );
+
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
     channel.ack(originalMsg);
