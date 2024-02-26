@@ -8,7 +8,7 @@ import {
   EditedMessage,
   EditedMessageEvent,
 } from 'telegram/events/EditedMessage';
-import { TelegramClient } from 'telegram';
+import { TelegramClient, sessions } from 'telegram';
 
 const groupNewTextMessageMetaKeyPrefix = 'GroupNewTextMessage';
 const generateTextMessageMetaKey = (text?: string) => {
@@ -48,13 +48,12 @@ export class BotGateway {
   ) {
     const environment = configService.get('base.environment');
     if (environment != 'development' && environment != 'production') return;
-
-    const sessionString = configService.get('telegram.session');
     const apiId = configService.get('telegram.apiId');
     const apiHash = configService.get('telegram.apiHash');
-    const session = new StringSession(sessionString); // fill this later with the value from session.save()
+    const session = configService.get('telegram.session');
+    const sessionString = new StringSession(session); // fill this later with the value from session.save()
 
-    const client = new TelegramClient(session, apiId, apiHash, {
+    const client = new TelegramClient(sessionString, apiId, apiHash, {
       connectionRetries: 5,
     });
     // TODO: refactor this part later
@@ -72,6 +71,9 @@ export class BotGateway {
         Logger.verbose(
           '✅ Now you should be connected to the TELEGRAM servers ✅',
         );
+        if (session == '') {
+          Logger.verbose(`Client session: ${client.session.save()}`);
+        }
 
         async function onNewMessageHandler(event: NewMessageEvent) {
           if (event.message.photo) {

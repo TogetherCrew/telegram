@@ -7,12 +7,12 @@ export default Joi.object({
 
   PORT: Joi.number().default(3000),
 
-  NEO4J_HOST: Joi.string().required(),
-  NEO4J_PORT: Joi.number().required(),
-  NEO4J_USERNAME: Joi.string().required(),
-  NEO4J_PASSWORD: Joi.string().required(),
+  // NEO4J_HOST: Joi.string().required(),
+  // NEO4J_PORT: Joi.number().required(),
+  // NEO4J_USERNAME: Joi.string().required(),
+  // NEO4J_PASSWORD: Joi.string().required(),
 
   API_ID: Joi.number().required(),
   API_HASH: Joi.string().required(),
-  SESSION: Joi.string().required(),
+  SESSION: Joi.string().default(''),
 });
