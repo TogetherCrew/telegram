@@ -1,31 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/telegram/src",
+  "sourceRoot": "apps/bot/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/telegram/tsconfig.app.json"
+    "tsConfigPath": "apps/bot/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/telegram",
+  "root": "apps/bot",
   "projects": {
-    "telegram": {
+    "bot": {
       "type": "application",
-      "root": "apps/telegram",
+      "root": "apps/bot",
       "entryFile": "main",
-      "sourceRoot": "apps/telegram/src",
+      "sourceRoot": "apps/bot/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/telegram/tsconfig.app.json"
-      }
-    },
-    "event-processor": {
-      "type": "application",
-      "root": "apps/event-processor",
-      "entryFile": "main",
-      "sourceRoot": "apps/event-processor/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/event-processor/tsconfig.app.json"
+        "tsConfigPath": "apps/bot/tsconfig.app.json"
       }
     }
   }
