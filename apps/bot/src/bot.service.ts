@@ -4,7 +4,7 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class BotService {
-  constructor(@Inject(Services.Event) private client: ClientProxy) {}
+  constructor(@Inject(Services.EventStore) private client: ClientProxy) {}
 
   async message(message) {
     this.client.emit(Events.Message, message);

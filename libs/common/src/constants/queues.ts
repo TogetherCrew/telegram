@@ -1,3 +1,3 @@
 export const Queues = {
-  Event: 'event_queue',
+  EventStore: 'event_store_queue',
 };

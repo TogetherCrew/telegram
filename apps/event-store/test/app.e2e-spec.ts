@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { EventsModule } from './../src/events.module';
+import { EventsModule } from '../src/event-store.module';
 
-describe('EventsController (e2e)', () => {
+describe('EventsStoreController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {

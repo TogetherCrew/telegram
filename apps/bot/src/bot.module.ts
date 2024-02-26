@@ -30,8 +30,8 @@ import { Queues, Services } from '@app/common';
       inject: [ConfigService],
     }),
     RmqModule.register({
-      name: Services.Event,
-      queue: Queues.Event,
+      name: Services.EventStore,
+      queue: Queues.EventStore,
     }),
   ],
   providers: [BotService, BotUpdate],

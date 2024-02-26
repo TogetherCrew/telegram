@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { EventsService } from './events.service';
+import { EventsService } from './event-store.service';
 import {
   Ctx,
   MessagePattern,
