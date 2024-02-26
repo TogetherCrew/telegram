@@ -15,4 +15,9 @@ export default Joi.object({
   API_ID: Joi.number().required(),
   API_HASH: Joi.string().required(),
   SESSION: Joi.string().default(''),
+
+  RABBITMQ_HOST: Joi.string().required(),
+  RABBITMQ_PORT: Joi.number().required(),
+  RABBITMQ_USER: Joi.string().required(),
+  RABBITMQ_PASS: Joi.string().required(),
 });

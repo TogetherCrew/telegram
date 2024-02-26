@@ -2,15 +2,18 @@ FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
+RUN apk update
+RUN apk add --update --no-cache python3 make g++
+
 COPY package*.json ./
 
-RUN yarn install
+RUN npm i
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
-FROM node:alpine AS production
+FROM development AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -19,7 +22,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install --production
+RUN npm i --production
 
 COPY . .
 
