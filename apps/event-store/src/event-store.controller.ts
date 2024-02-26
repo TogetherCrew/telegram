@@ -66,4 +66,25 @@ export class EventsController {
     const originalMsg = context.getMessage();
     channel.ack(originalMsg);
   }
+
+  @MessagePattern(Events.ChatMemberUpdated)
+  async chat_member(
+    @Payload() data: any,
+    @Ctx() context: RmqContext,
+  ): Promise<void> {
+    console.log(data);
+    const chat_id = data.chat_member.chat.id;
+    const ts = data.chat_member.date;
+
+    await this.eventsService.createEvent(
+      ts,
+      chat_id,
+      Events.ChatMemberUpdated,
+      data,
+    );
+
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    channel.ack(originalMsg);
+  }
 }

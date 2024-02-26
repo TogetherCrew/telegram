@@ -17,4 +17,8 @@ export class BotService {
   async message_reaction(messageReaction) {
     this.client.emit(Events.MessageReaction, messageReaction);
   }
+
+  async chat_member(chatMember) {
+    this.client.emit(Events.ChatMemberUpdated, chatMember);
+  }
 }
