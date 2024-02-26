@@ -1,6 +1,8 @@
-import { Update, Ctx, Start, On } from 'nestjs-telegraf';
+import { Update, Ctx, Start, On, Message } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 import { BotService } from './bot.service';
+import { EditedMessage } from './decorators/editedMessage.decorator';
+import { MessageReaction } from './decorators/messageReaction.decorator';
 
 @Update()
 export class BotUpdate {
@@ -12,17 +14,17 @@ export class BotUpdate {
   }
 
   @On('message_reaction')
-  async message_reaction(@Ctx() ctx: Context) {
-    console.log('message_reaction', ctx);
+  async message_reaction(@MessageReaction() reaction) {
+    console.log('message_reaction', reaction);
   }
 
   @On('message')
-  async message(@Ctx() ctx: Context) {
-    console.log('message', ctx);
+  async message(@Message() message) {
+    console.log('message', message);
   }
 
   @On('edited_message')
-  async edited_message(@Ctx() ctx: Context) {
-    console.log('edited_message', ctx);
+  async edited_message(@EditedMessage() message) {
+    console.log('edited_message', message);
   }
 }
