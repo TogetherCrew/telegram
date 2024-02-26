@@ -1,4 +1,4 @@
-export default (): Record<string, unknown> => ({
+export const rmqConfig = (): Record<string, unknown> => ({
   rmq: {
     host: process.env.RMQ_HOST,
     port: process.env.RMQ_PORT,

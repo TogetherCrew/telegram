@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-export default Joi.object({
+export const schemaConfig = Joi.object({
   RMQ_HOST: Joi.string().required(),
   RMQ_PORT: Joi.number().default(5672),
   RMQ_USER: Joi.string().required(),
