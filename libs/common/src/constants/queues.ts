@@ -1,1 +1,3 @@
-export const EVENT_QUEUE: string = 'EVENT_QUEUE';
+export const Queues = {
+  Event: 'event_queue',
+};

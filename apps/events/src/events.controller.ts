@@ -6,13 +6,13 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { MESSAGE_EVENT } from '@app/common';
+import { Events } from '@app/common';
 
 @Controller()
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
-  @MessagePattern(MESSAGE_EVENT)
+  @MessagePattern(Events.Message)
   async message(
     @Payload() data: any,
     @Ctx() context: RmqContext,

@@ -4,14 +4,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { BotUpdate } from './bot.update';
 import { allowedUpdates } from './constants';
-// import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
   schemaConfig,
   telegrafConfig,
   rmqConfig,
   RmqModule,
 } from '@app/common';
-import { EVENT_QUEUE, EVENT_SERVICE } from '@app/common';
+import { Queues, Services } from '@app/common';
 
 @Module({
   imports: [
@@ -31,25 +30,9 @@ import { EVENT_QUEUE, EVENT_SERVICE } from '@app/common';
       inject: [ConfigService],
     }),
     RmqModule.register({
-      name: EVENT_SERVICE,
-      queue: EVENT_QUEUE,
+      name: Services.Event,
+      queue: Queues.Event,
     }),
-    // ClientsModule.registerAsync({
-    //   clients: [
-    //     {
-    //       name: EVENT_SERVICE,
-    //       imports: [ConfigModule.forFeature(rmqConfig)],
-    //       useFactory: (configService: ConfigService) => ({
-    //         transport: Transport.RMQ,
-    //         options: {
-    //           urls: [configService.get<string>('rmq.uri')],
-    //           queue: EVENT_QUEUE,
-    //         },
-    //       }),
-    //       inject: [ConfigService],
-    //     },
-    //   ],
-    // }),
   ],
   providers: [BotService, BotUpdate],
 })

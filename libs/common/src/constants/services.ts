@@ -1,2 +1,4 @@
-export const TELEGRAM_SERVICE: string = 'TELEGRAM_SERVICE';
-export const EVENT_SERVICE: string = 'EVENT_SERVICE';
+export const Services = {
+  Bot: 'bot_service',
+  Event: 'event_service',
+};
