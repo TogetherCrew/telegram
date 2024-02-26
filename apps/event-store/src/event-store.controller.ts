@@ -7,6 +7,7 @@ import {
   RmqContext,
 } from '@nestjs/microservices';
 import { Events } from '@app/common';
+import { Message, Update } from 'grammy/types';
 
 @Controller()
 export class EventsController {
@@ -14,13 +15,15 @@ export class EventsController {
 
   @MessagePattern(Events.Message)
   async message(
-    @Payload() data: any,
+    @Payload() data: Message,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    const chat_id = data.chat.id;
-    const ts = data.date;
-
-    await this.eventsService.createEvent(ts, chat_id, Events.Message, data);
+    await this.eventsService.createEvent(
+      data.date,
+      data.chat.id,
+      Events.Message,
+      data,
+    );
 
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
@@ -29,15 +32,14 @@ export class EventsController {
 
   @MessagePattern(Events.EditedMessage)
   async edited_message(
-    @Payload() data: any,
+    @Payload() data: Update,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    const chat_id = data.edited_message.chat.id;
-    const ts = data.edited_message.date;
+    const { edited_message } = data;
 
     await this.eventsService.createEvent(
-      ts,
-      chat_id,
+      edited_message.date,
+      edited_message.chat.id,
       Events.EditedMessage,
       data,
     );
@@ -49,15 +51,14 @@ export class EventsController {
 
   @MessagePattern(Events.MessageReaction)
   async message_reaction(
-    @Payload() data: any,
+    @Payload() data: Update,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    const chat_id = data.message_reaction.chat.id;
-    const ts = data.message_reaction.date;
+    const { message_reaction } = data;
 
     await this.eventsService.createEvent(
-      ts,
-      chat_id,
+      message_reaction.date,
+      message_reaction.chat.id,
       Events.MessageReaction,
       data,
     );
@@ -69,16 +70,14 @@ export class EventsController {
 
   @MessagePattern(Events.ChatMemberUpdated)
   async chat_member(
-    @Payload() data: any,
+    @Payload() data: Update,
     @Ctx() context: RmqContext,
   ): Promise<void> {
-    console.log(data);
-    const chat_id = data.chat_member.chat.id;
-    const ts = data.chat_member.date;
+    const { chat_member } = data;
 
     await this.eventsService.createEvent(
-      ts,
-      chat_id,
+      chat_member.date,
+      chat_member.chat.id,
       Events.ChatMemberUpdated,
       data,
     );
