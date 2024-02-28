@@ -7,21 +7,17 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { RmqContext } from '@nestjs/microservices';
+import { RmqService } from '@app/common';
 
 @Injectable()
 export class EventsInterceptor implements NestInterceptor {
+  constructor(private readonly rmqService: RmqService) {}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const channel = context
-      .switchToRpc()
-      .getContext<RmqContext>()
-      .getChannelRef();
-    const originalMsg = context
-      .switchToRpc()
-      .getContext<RmqContext>()
-      .getMessage();
+    const ctx = context.switchToRpc().getContext<RmqContext>();
     return next.handle().pipe(
-      tap(async () => {
-        await channel.ack(originalMsg);
+      tap(() => {
+        this.rmqService.ack(ctx);
       }),
     );
   }

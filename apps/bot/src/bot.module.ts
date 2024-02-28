@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BotUpdate } from './bot.update';
 import {
   schemaConfig,
-  telegrafConfig,
+  telegramConfig,
   rmqConfig,
   RmqModule,
 } from '@app/common';
@@ -16,7 +16,7 @@ import { API_CONSTANTS } from 'grammy';
   imports: [
     ConfigModule.forRoot({
       validationSchema: schemaConfig,
-      load: [telegrafConfig, rmqConfig],
+      load: [telegramConfig, rmqConfig],
       isGlobal: true,
     }),
     RmqModule.register({
@@ -24,7 +24,7 @@ import { API_CONSTANTS } from 'grammy';
       queue: Queues.EventStore,
     }),
     NestjsGrammyModule.forRootAsync({
-      imports: [ConfigModule.forFeature(telegrafConfig)],
+      imports: [ConfigModule.forFeature(telegramConfig)],
       useFactory: (configService: ConfigService) => ({
         token: configService.get<string>('telegram.token'),
         pollingOptions: {

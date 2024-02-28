@@ -5,6 +5,12 @@ import { EventStoreController } from './event-store.controller';
 import { EventStoreService } from './event-store.service';
 import { Events } from '@app/common';
 import { Message, Update } from 'grammy/types';
+import { RmqService } from '@app/common';
+
+// Mock RmqService
+class RmqServiceMock {
+  ack = jest.fn();
+}
 
 describe('EventStoreController', () => {
   let controller: EventStoreController;
@@ -20,6 +26,7 @@ describe('EventStoreController', () => {
             createEvent: jest.fn(),
           },
         },
+        { provide: RmqService, useClass: RmqServiceMock },
       ],
     }).compile();
 
