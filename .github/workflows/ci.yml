@@ -18,9 +18,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn run lint
+          cache: 'npm'
+      - run: npm install --only=dev
+      - run: npm run lint
   test:
     runs-on: ubuntu-latest
     steps:
@@ -28,9 +28,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn run test
+          cache: 'npm'
+      - run: npm install --only=dev
+      - run: npm run test
       # - run: yarn run test:e2e
   coverage:
     needs: [ test ]
@@ -40,13 +40,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
-      - run: yarn install
+          cache: 'npm'
+      - run: npm install --only=dev
       - uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: yarn run test:cov
+          coverageCommand: npm run test:cov
   build-push:
     needs: [ test, lint ]
     runs-on: ubuntu-latest
