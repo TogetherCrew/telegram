@@ -3,9 +3,11 @@
 (Message { id, text })
 
 (User)-[:CREATED_MESSAGE { timestamp }]->(Message)
-(User)-[:EDITED_MESSAGE { timestamp, text }]->(Message)
+(Message)-[:UPDATED_TO { timestamp }]->(Message)
+(Message)-[:MENTIONED]->(User)
 (User)-[:REACTED_TO { timestamp, old_reaction, new_reaction }]->(Message)
 (Message)-[:REPLY_TO]->(Message)
+
 
 (User)-[:JOINED { timestamp }]->(Chat)
 (User)-[:LEFT { timestamp }]->(Chat)
