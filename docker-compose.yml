@@ -10,6 +10,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - mongo_data:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 1m30s
@@ -54,4 +56,5 @@ services:
   #     rabbitmq: 
   #       condition: service_healthy
 
-  
+  volumes:
+    mongo_data:
