@@ -5,7 +5,7 @@ export const mongoConfig = (): Record<string, unknown> => ({
     user: process.env.MONGO_USER,
     pass: process.env.MONGO_PASS,
     uri: [
-      'amqp://',
+      'mongodb://',
       process.env.MONGO_USER,
       ':',
       process.env.MONGO_PASS,

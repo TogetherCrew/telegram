@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
+
+export type EventDocument = HydratedDocument<Event>;
 
 @Schema({ strict: false }) // strict: false allows storing unstructured data
-export class Event extends Document {
+export class Event {
   @Prop({ required: true })
-  ts: number;
+  timestamp: Date;
 
   @Prop({ required: true })
   event_type: string;

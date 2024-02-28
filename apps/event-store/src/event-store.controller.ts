@@ -1,40 +1,27 @@
-import { Controller } from '@nestjs/common';
-import { EventsService } from './event-store.service';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+import { Controller, UseInterceptors } from '@nestjs/common';
+import { EventStoreService } from './event-store.service';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Events } from '@app/common';
 import { Message, Update } from 'grammy/types';
+import { EventsInterceptor } from './interceptors/events.interceptor';
 
 @Controller()
-export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+@UseInterceptors(EventsInterceptor)
+export class EventStoreController {
+  constructor(private readonly eventsService: EventStoreService) {}
 
   @MessagePattern(Events.Message)
-  async message(
-    @Payload() data: Message,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
+  async message(@Payload() data: Message): Promise<void> {
     await this.eventsService.createEvent(
       data.date,
       data.chat.id,
       Events.Message,
       data,
     );
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
   }
 
   @MessagePattern(Events.EditedMessage)
-  async edited_message(
-    @Payload() data: Update,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
+  async edited_message(@Payload() data: Update): Promise<void> {
     const { edited_message } = data;
 
     await this.eventsService.createEvent(
@@ -43,17 +30,10 @@ export class EventsController {
       Events.EditedMessage,
       data,
     );
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
   }
 
   @MessagePattern(Events.MessageReaction)
-  async message_reaction(
-    @Payload() data: Update,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
+  async message_reaction(@Payload() data: Update): Promise<void> {
     const { message_reaction } = data;
 
     await this.eventsService.createEvent(
@@ -62,17 +42,10 @@ export class EventsController {
       Events.MessageReaction,
       data,
     );
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
   }
 
   @MessagePattern(Events.ChatMemberUpdated)
-  async chat_member(
-    @Payload() data: Update,
-    @Ctx() context: RmqContext,
-  ): Promise<void> {
+  async chat_member(@Payload() data: Update): Promise<void> {
     const { chat_member } = data;
 
     await this.eventsService.createEvent(
@@ -81,9 +54,5 @@ export class EventsController {
       Events.ChatMemberUpdated,
       data,
     );
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
   }
 }

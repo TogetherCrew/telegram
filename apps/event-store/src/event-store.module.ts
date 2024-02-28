@@ -1,23 +1,29 @@
 import { Module } from '@nestjs/common';
-import { EventsController } from './event-store.controller';
-import { EventsService } from './event-store.service';
-import { ConfigModule } from '@nestjs/config';
-import { schemaConfig, rmqConfig, RmqModule } from '@app/common';
+import { EventStoreController } from './event-store.controller';
+import { EventStoreService } from './event-store.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { schemaConfig, rmqConfig, RmqModule, mongoConfig } from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventSchema } from './events.model';
+import { EventSchema, Event } from './schemas/event.schema';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validationSchema: schemaConfig,
-      load: [rmqConfig],
+      load: [rmqConfig, mongoConfig],
       isGlobal: true,
     }),
     RmqModule,
-    MongooseModule.forRoot('mongodb://root:pass@localhost:27017'),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule.forFeature(mongoConfig)],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('mongo.uri'),
+      }),
+      inject: [ConfigService],
+    }),
     MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
   ],
-  controllers: [EventsController],
-  providers: [EventsService],
+  controllers: [EventStoreController],
+  providers: [EventStoreService],
 })
-export class EventsModule {}
+export class EventStoreModule {}
