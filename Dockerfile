@@ -7,13 +7,13 @@ RUN apk add --update --no-cache python3 make g++
 
 COPY package*.json ./
 
-RUN npm i
+RUN npm i --force
 
 COPY . .
 
 RUN npm run build
 
-FROM development AS production
+FROM node:alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm i --production
+RUN npm i --production --force
 
 COPY . .
 

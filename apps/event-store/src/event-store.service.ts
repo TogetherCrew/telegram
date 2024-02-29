@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { Event } from './schemas/event.schema';
+import { Event, EventSchema } from './schemas/event.schema';
 
 @Injectable()
 export class EventStoreService {
@@ -17,13 +17,19 @@ export class EventStoreService {
     event_data: any,
   ): Promise<Event> {
     const dbName = `tg:${chat_id}`;
-    this.connection.useDb(dbName);
+    const db = this.connection.useDb(dbName, { useCache: true });
 
-    const createdEvent = await this.eventModel.create({
-      timestamp,
-      event_type,
-      event_data,
-    });
+    if (!db.models[this.eventModel.collection.name]) {
+      db.model(this.eventModel.collection.name, EventSchema);
+    }
+
+    const createdEvent = await db
+      .model(this.eventModel.collection.name)
+      .create({
+        timestamp,
+        event_type,
+        event_data,
+      });
     return createdEvent;
   }
 }

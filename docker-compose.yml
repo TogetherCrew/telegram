@@ -19,7 +19,6 @@ services:
       retries: 2
       start_period: 30s
 
-
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3.12.12-management
@@ -31,30 +30,47 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
     healthcheck:
-      test: ["CMD" ,"wget", "http://localhost:7474"]
+      test: rabbitmq-diagnostics -q ping
       interval: 1m30s
       timeout: 10s
       retries: 2
       start_period: 30s
 
-  # telegram:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: development
-  #   command: nest start telegram
-  #   ports:
-  #     - 3000:3000
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - ./node_modules:/usr/src/app/node_modules
-  #   depends_on:
-  #     # neo4j:
-  #       # condition: service_healthy
-  #     rabbitmq: 
-  #       condition: service_healthy
+  bot:
+    container_name: bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    command: npm run start:dev bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    depends_on:
+      rabbitmq: 
+        condition: service_healthy
 
-  volumes:
-    mongo_data:
+  event-store:
+    container_name: event-store
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    command: npm run start:dev event-store
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    depends_on:
+      mongodb: 
+        condition: service_healthy
+      rabbitmq: 
+        condition: service_healthy
+
+volumes:
+  mongo_data:
