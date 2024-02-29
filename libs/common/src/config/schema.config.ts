@@ -12,4 +12,9 @@ export const schemaConfig = Joi.object({
   MONGO_PORT: Joi.number().default(27017),
   MONGO_USER: Joi.string().required(),
   MONGO_PASS: Joi.string().required(),
+
+  NEO4J_HOST: Joi.string().required(),
+  NEO4J_PORT: Joi.number().default(7687),
+  NEO4J_USER: Joi.string().required(),
+  NEO4J_PASS: Joi.string().required(),
 });

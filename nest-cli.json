@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/event-store/tsconfig.app.json"
       }
+    },
+    "graph-store": {
+      "type": "application",
+      "root": "apps/graph-store",
+      "entryFile": "main",
+      "sourceRoot": "apps/graph-store/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/graph-store/tsconfig.app.json"
+      }
     }
   }
 }
