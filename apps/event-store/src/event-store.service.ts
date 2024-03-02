@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { Event, EventSchema } from './schemas/event.schema';
+import { Services } from '@app/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class EventStoreService {
   constructor(
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
     @InjectConnection() private readonly connection: Connection,
+    @Inject(Services.GraphStore) private client: ClientProxy,
   ) {}
 
   async createEvent(
@@ -30,6 +33,8 @@ export class EventStoreService {
         event_type,
         event_data,
       });
+    console.log('Saved event to db.');
+    this.client.emit(event_type, createdEvent);
     return createdEvent;
   }
 }

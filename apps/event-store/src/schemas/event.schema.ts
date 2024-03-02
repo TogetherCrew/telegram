@@ -6,7 +6,7 @@ export type EventDocument = HydratedDocument<Event>;
 @Schema({ strict: false }) // strict: false allows storing unstructured data
 export class Event {
   @Prop({ required: true })
-  timestamp: Date;
+  timestamp: number;
 
   @Prop({ required: true })
   event_type: string;

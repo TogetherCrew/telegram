@@ -2,7 +2,14 @@ import { Module } from '@nestjs/common';
 import { EventStoreController } from './event-store.controller';
 import { EventStoreService } from './event-store.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { schemaConfig, rmqConfig, RmqModule, mongoConfig } from '@app/common';
+import {
+  schemaConfig,
+  rmqConfig,
+  RmqModule,
+  mongoConfig,
+  Queues,
+  Services,
+} from '@app/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventSchema, Event } from './schemas/event.schema';
 
@@ -22,6 +29,10 @@ import { EventSchema, Event } from './schemas/event.schema';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
+    RmqModule.register({
+      name: Services.GraphStore,
+      queue: Queues.GraphStore,
+    }),
   ],
   controllers: [EventStoreController],
   providers: [EventStoreService],

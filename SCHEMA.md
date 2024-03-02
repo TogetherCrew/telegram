@@ -1,13 +1,21 @@
-(Chat { id, title, type })
-(User { id })
-(Message { id, text })
+(TGChat { id, title, type })
+(TGUser { id })
+(TGMessage { id, text })
 
-(User)-[:CREATED_MESSAGE { timestamp }]->(Message)
-(Message)-[:UPDATED_TO { timestamp }]->(Message)
-(Message)-[:MENTIONED]->(User)
-(User)-[:REACTED_TO { timestamp, old_reaction, new_reaction }]->(Message)
-(Message)-[:REPLY_TO]->(Message)
+(TGUser)-[:CREATED_MESSAGE { timestamp }]->(TGMessage)
+(TGMessage)-[:MESSAGE_EDITED { timestamp }]->(TGMessage)
+(TGMessage)-[:MENTIONED]->(User)
+(TGUser)-[:REACTED_TO { timestamp, old_reaction, new_reaction }]->(TGMessage)
+(TGMessage)-[:REPLIED]->(TGMessage)
 
 
-(User)-[:JOINED { timestamp }]->(Chat)
-(User)-[:LEFT { timestamp }]->(Chat)
+(TGUser)-[:JOINED { timestamp }]->(TGChat)
+(TGUser)-[:LEFT { timestamp }]->(TGChat)
+
+## Actions
+
+### Message
+
+1. Create or update chat
+2. Create or update user
+3. Create message
