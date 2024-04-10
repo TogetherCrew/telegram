@@ -4,7 +4,6 @@ import { GraphStoreService } from './graph-store.service';
 import { RmqModule, neo4jConfig, rmqConfig, schemaConfig } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jModule } from 'nest-neo4j';
-import { NodeHelper } from './cyphers/helpers/node.helper';
 
 @Module({
   imports: [
@@ -21,6 +20,6 @@ import { NodeHelper } from './cyphers/helpers/node.helper';
     }),
   ],
   controllers: [GraphStoreController],
-  providers: [GraphStoreService, NodeHelper],
+  providers: [GraphStoreService],
 })
 export class GraphStoreModule {}
