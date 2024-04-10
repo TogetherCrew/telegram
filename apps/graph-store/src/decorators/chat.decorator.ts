@@ -1,13 +1,15 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { Context } from 'grammy';
 
 export const Chat = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const { event_data } = ctx.switchToRpc().getData();
+    const context: Context = ctx.getArgs()[0] as Context;
+    const { update } = context;
 
     return (
-      event_data.chat ||
-      event_data.edited_message?.chat ||
-      event_data.message_reaction?.chat
+      update.message?.chat ||
+      update.edited_message?.chat ||
+      update.message_reaction?.chat
     );
   },
 );

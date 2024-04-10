@@ -1,9 +1,13 @@
-import { Controller, Inject, Logger, UseInterceptors } from '@nestjs/common';
+import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { GraphStoreService } from './graph-store.service';
-import { ClientProxy, MessagePattern } from '@nestjs/microservices';
-import { Events, Services } from '@app/common';
+import { MessagePattern } from '@nestjs/microservices';
+import { EventNames } from '@app/common';
 import { RmqInterceptor } from './interceptors/rmq.interceptor';
 import { User } from './decorators/user.decorator';
+// import { Mentions } from './decorators/mentions.decorator';
+import { Chat } from './decorators/chat.decorator';
+import { Message } from './decorators/message.decorator';
+import { Reaction } from './decorators/reaction.decorator';
 import { Mentions } from './decorators/mentions.decorator';
 
 @Controller()
@@ -11,30 +15,34 @@ import { Mentions } from './decorators/mentions.decorator';
 export class GraphStoreController {
   private readonly logger = new Logger(GraphStoreController.name);
 
-  constructor(
-    private readonly graphStoreService: GraphStoreService,
-    @Inject(Services.Bot) private client: ClientProxy,
-  ) {}
+  constructor(private readonly graphStoreService: GraphStoreService) {}
 
-  @MessagePattern(Events.Message)
+  @MessagePattern(EventNames.MESSAGE)
   async message(
+    @Chat() chat,
     @User() user,
+    @Message() message,
     @Mentions() mentions,
-    // @Chat() chat,
   ): Promise<void> {
-    // Get user ids
-    this.client.emit('get_chat', mentions[0]);
-    this.logger.log(user);
-    this.logger.log(mentions);
+    this.graphStoreService.message(chat, user, message, mentions);
   }
 
-  @MessagePattern(Events.EditedMessage)
-  async edited_message(@User() user): Promise<void> {
-    this.logger.log(user);
+  @MessagePattern(EventNames.EDITED_MESSAGE)
+  async edited_message(
+    @Chat() chat,
+    @User() user,
+    @Message() message,
+    @Mentions() mentions,
+  ): Promise<void> {
+    this.graphStoreService.message(chat, user, message, mentions);
   }
 
-  @MessagePattern(Events.MessageReaction)
-  async message_reaction(@User() user): Promise<void> {
-    this.logger.log(user);
+  @MessagePattern(EventNames.MESSAGE_REACTION)
+  async message_reaction(
+    @Chat() chat,
+    @User() user,
+    @Reaction() reaction,
+  ): Promise<void> {
+    this.graphStoreService.reaction(chat, user, reaction);
   }
 }

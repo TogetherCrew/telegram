@@ -1,14 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphStoreController } from './graph-store.controller';
 import { GraphStoreService } from './graph-store.service';
-import {
-  Queues,
-  RmqModule,
-  Services,
-  neo4jConfig,
-  rmqConfig,
-  schemaConfig,
-} from '@app/common';
+import { RmqModule, neo4jConfig, rmqConfig, schemaConfig } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jModule } from 'nest-neo4j';
 import { NodeHelper } from './cyphers/helpers/node.helper';
@@ -21,10 +14,6 @@ import { NodeHelper } from './cyphers/helpers/node.helper';
       isGlobal: true,
     }),
     RmqModule,
-    RmqModule.register({
-      name: Services.Bot,
-      queue: Queues.Bot,
-    }),
     Neo4jModule.forRootAsync({
       import: [ConfigModule],
       useFactory: (configService: ConfigService) => configService.get('neo4j'),
