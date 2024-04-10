@@ -1,58 +1,67 @@
-import { Controller, UseInterceptors } from '@nestjs/common';
+import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { EventStoreService } from './event-store.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { Events } from '@app/common';
-import { Message, Update } from 'grammy/types';
+import { EventNames } from '@app/common';
 import { EventsInterceptor } from './interceptors/events.interceptor';
+import { API_CONSTANTS } from 'grammy';
 
 @Controller()
 @UseInterceptors(EventsInterceptor)
 export class EventStoreController {
+  private readonly logger = new Logger(EventStoreController.name);
+
   constructor(private readonly eventsService: EventStoreService) {}
 
-  @MessagePattern(Events.Message)
-  async message(@Payload() data: Message): Promise<void> {
+  a = typeof API_CONSTANTS.ALL_UPDATE_TYPES;
+
+  @MessagePattern(EventNames.MESSAGE)
+  async message(@Payload() data): Promise<void> {
+    const { update } = data;
+    const { message } = update;
     await this.eventsService.createEvent(
-      data.date,
-      data.chat.id,
-      Events.Message,
-      data,
+      message.date,
+      message.chat.id,
+      EventNames.MESSAGE,
+      update,
     );
   }
 
-  @MessagePattern(Events.EditedMessage)
-  async edited_message(@Payload() data: Update): Promise<void> {
-    const { edited_message } = data;
+  @MessagePattern(EventNames.EDITED_MESSAGE)
+  async edited_message(@Payload() data): Promise<void> {
+    const { update } = data;
+    const { edited_message } = update;
 
     await this.eventsService.createEvent(
       edited_message.date,
       edited_message.chat.id,
-      Events.EditedMessage,
-      data,
+      EventNames.EDITED_MESSAGE,
+      update,
     );
   }
 
-  @MessagePattern(Events.MessageReaction)
-  async message_reaction(@Payload() data: Update): Promise<void> {
-    const { message_reaction } = data;
+  @MessagePattern(EventNames.MESSAGE_REACTION)
+  async message_reaction(@Payload() data): Promise<void> {
+    const { update } = data;
+    const { message_reaction } = update;
 
     await this.eventsService.createEvent(
       message_reaction.date,
       message_reaction.chat.id,
-      Events.MessageReaction,
-      data,
+      EventNames.MESSAGE_REACTION,
+      update,
     );
   }
 
-  @MessagePattern(Events.ChatMemberUpdated)
-  async chat_member(@Payload() data: Update): Promise<void> {
-    const { chat_member } = data;
+  @MessagePattern(EventNames.CHAT_MEMBER)
+  async chat_member(@Payload() data): Promise<void> {
+    const { update } = data;
+    const { chat_member } = update;
 
     await this.eventsService.createEvent(
       chat_member.date,
       chat_member.chat.id,
-      Events.ChatMemberUpdated,
-      data,
+      EventNames.CHAT_MEMBER,
+      update,
     );
   }
 }
