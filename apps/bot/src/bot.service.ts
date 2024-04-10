@@ -1,25 +1,33 @@
-import { Events, Services } from '@app/common';
-import { Inject, Injectable } from '@nestjs/common';
+import { Services } from '@app/common';
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { Message, Update } from 'grammy/types';
+import { API_CONSTANTS, Bot } from 'grammy';
 
 @Injectable()
-export class BotService {
-  constructor(@Inject(Services.EventStore) private client: ClientProxy) {}
+export class BotService implements OnModuleInit {
+  private bot: Bot;
+  private readonly logger = new Logger(BotService.name);
 
-  async message(message: Message) {
-    this.client.emit(Events.Message, message);
+  constructor(
+    @Inject(Services.EventStore.name) private eventClient: ClientProxy,
+    @Inject(Services.GraphStore.name) private graphClient: ClientProxy,
+    private configService: ConfigService,
+  ) {
+    this.bot = new Bot(configService.get<string>('telegram.token'));
+
+    API_CONSTANTS.ALL_UPDATE_TYPES.map((updateType) => {
+      this.bot.on(updateType, (ctx) => {
+        this.logger.log(updateType, ctx.chat.id);
+        this.eventClient.emit(updateType, ctx);
+        this.graphClient.emit(updateType, ctx);
+      });
+    });
   }
 
-  async edited_message(editedMessage: Update) {
-    this.client.emit(Events.EditedMessage, editedMessage);
-  }
-
-  async message_reaction(messageReaction: Update) {
-    this.client.emit(Events.MessageReaction, messageReaction);
-  }
-
-  async chat_member(chatMember: Update) {
-    this.client.emit(Events.ChatMemberUpdated, chatMember);
+  async onModuleInit() {
+    await this.bot.start({
+      allowed_updates: API_CONSTANTS.ALL_UPDATE_TYPES,
+    });
   }
 }

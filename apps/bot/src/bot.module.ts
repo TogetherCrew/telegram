@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
 import { BotService } from './bot.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { BotUpdate } from './bot.update';
+import { ConfigModule } from '@nestjs/config';
+// import { BotUpdate } from './bot.update';
 import {
   schemaConfig,
   telegramConfig,
   rmqConfig,
   RmqModule,
 } from '@app/common';
-import { Queues, Services } from '@app/common';
-import { NestjsGrammyModule } from '@grammyjs/nestjs';
-import { API_CONSTANTS } from 'grammy';
+import { Services } from '@app/common';
 
 @Module({
   imports: [
@@ -19,21 +17,9 @@ import { API_CONSTANTS } from 'grammy';
       load: [telegramConfig, rmqConfig],
       isGlobal: true,
     }),
-    RmqModule.register({
-      name: Services.EventStore,
-      queue: Queues.EventStore,
-    }),
-    NestjsGrammyModule.forRootAsync({
-      imports: [ConfigModule.forFeature(telegramConfig)],
-      useFactory: (configService: ConfigService) => ({
-        token: configService.get<string>('telegram.token'),
-        pollingOptions: {
-          allowed_updates: API_CONSTANTS.ALL_UPDATE_TYPES,
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    RmqModule.register(Services.EventStore),
+    RmqModule.register(Services.GraphStore),
   ],
-  providers: [BotService, BotUpdate],
+  providers: [BotService],
 })
 export class BotModule {}
