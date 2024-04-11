@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { Event, EventSchema } from './schemas/event.schema';
 
 @Injectable()
 export class EventStoreService {
+  private readonly logger = new Logger(EventStoreService.name);
+
   constructor(
     @InjectModel(Event.name) private readonly eventModel: Model<Event>,
     @InjectConnection() private readonly connection: Connection,
@@ -30,7 +32,7 @@ export class EventStoreService {
         event_type,
         event_data,
       });
-    console.log('Saved event to db.');
+    this.logger.log('Saved event to db.');
     return createdEvent;
   }
 }
