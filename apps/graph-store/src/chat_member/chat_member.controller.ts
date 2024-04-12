@@ -1,4 +1,4 @@
-import { EventNames } from '@app/common';
+import { UpdateEvent } from '@app/common';
 import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { DChatMemberUpdated } from '../decorators/chatMemberUpdated.decorator';
@@ -6,6 +6,7 @@ import { RmqInterceptor } from '../interceptors/rmq.interceptor';
 import { Chat, ChatMemberUpdated } from 'grammy/types';
 import { ChatMemberService } from './chat_member.service';
 import { DChat } from '../decorators/chat.decorator';
+import { FilterQuery } from 'grammy';
 
 type Status =
   | 'member'
@@ -31,12 +32,12 @@ export class ChatMemberController {
 
   constructor(private readonly chatMemberService: ChatMemberService) {}
 
-  @MessagePattern(EventNames.CHAT_MEMBER)
+  @MessagePattern<FilterQuery>(UpdateEvent.CHAT_MEMBER)
   async chat_member(
     @DChat() chat: Chat,
     @DChatMemberUpdated() chat_member: ChatMemberUpdated,
   ): Promise<void> {
-    this.logger.log(`Received ${EventNames.CHAT_MEMBER} for ${chat.id}`);
+    this.logger.log(`Received ${UpdateEvent.CHAT_MEMBER} for ${chat.id}`);
 
     const {
       date,

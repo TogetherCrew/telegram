@@ -1,17 +1,10 @@
-import { API_CONSTANTS } from 'grammy';
+import { FilterQuery } from 'grammy';
 
-type UpdateType = (typeof API_CONSTANTS.ALL_UPDATE_TYPES)[number];
-
-function createUpdateTypeDictionary(): {
-  [key in UpdateType as Uppercase<UpdateType>]: UpdateType;
-} {
-  const dict: Partial<{
-    [key in UpdateType as Uppercase<UpdateType>]: key;
-  }> = {};
-  for (const type of API_CONSTANTS.ALL_UPDATE_TYPES) {
-    dict[type.toUpperCase() as Uppercase<UpdateType>] = type;
-  }
-  return dict as { [key in UpdateType as Uppercase<key>]: key };
+interface FilterQueryDictionary {
+  [key: string]: FilterQuery;
 }
 
-export const EventNames = createUpdateTypeDictionary();
+export const UpdateEvent: FilterQueryDictionary = {
+  MESSAGE_TEXT: 'message:text',
+  CHAT_MEMBER: 'chat_member',
+};
