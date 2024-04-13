@@ -32,7 +32,7 @@ export class ChatMemberController {
 
   constructor(private readonly chatMemberService: ChatMemberService) {}
 
-  @MessagePattern<FilterQuery>(UpdateEvent.CHAT_MEMBER)
+  @MessagePattern(UpdateEvent.CHAT_MEMBER)
   async chat_member(
     @DChat() chat: Chat,
     @DChatMemberUpdated() chat_member: ChatMemberUpdated,
