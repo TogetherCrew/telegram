@@ -7,7 +7,7 @@ RUN apk add --update --no-cache python3 make g++
 
 COPY package*.json ./
 
-RUN npm i --force
+RUN npm i
 
 COPY . .
 
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm i --production --force
+RUN npm i --omit=dev
 
 COPY . .
 
