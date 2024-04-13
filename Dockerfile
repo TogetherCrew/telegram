@@ -22,7 +22,6 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm i -g @nestjs/cli
 RUN npm i --production --force
 
 COPY . .
