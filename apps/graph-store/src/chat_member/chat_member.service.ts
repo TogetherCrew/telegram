@@ -165,14 +165,10 @@ export class ChatMemberService {
   }
 
   private async write(cypher: ChatMemberCypher, params: any, tx?: Transaction) {
-    try {
-      if (tx) {
-        tx.run(cypher, params);
-      } else {
-        this.neo4jService.write(cypher, params);
-      }
-    } catch (error) {
-      this.logger.error(error);
+    if (tx) {
+      tx.run(cypher, params);
+    } else {
+      this.neo4jService.write(cypher, params);
     }
   }
 }
