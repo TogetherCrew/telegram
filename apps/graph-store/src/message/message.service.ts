@@ -17,7 +17,7 @@ const UPDATE_MESSAGE = `
 MATCH (user:TGUser { id: $user.id })
 MATCH (chat:TGChat { id: $chat.id })
 MATCH (latest:TGMessage { id: $message.message_id })-[:SENT_IN]->(chat)
-WHERE NOT EXISTS ((latest)-[:EDITED]->())
+WHERE NOT EXISTS (()-[:EDITED]->(latest))
 MERGE (user)-[:CREATED_MESSAGE]->(message:TGMessage { id: $message.message_id, edit_date: $message.edit_date })-[:SENT_IN]->(chat)
   ON CREATE
     SET message = apoc.map.merge(message, apoc.map.clean($message, ['id'], [null])),
