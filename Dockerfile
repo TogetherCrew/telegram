@@ -2,13 +2,16 @@ FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
+RUN apk update
+RUN apk add --update --no-cache python3 make g++
+
 COPY package*.json ./
 
-RUN yarn install
+RUN npm i --force
 
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
 FROM node:alpine AS production
 
@@ -19,7 +22,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install --production
+RUN npm i --production --force
 
 COPY . .
 
