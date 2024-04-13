@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { GraphStoreController } from './graph-store.controller';
 import { RmqModule, neo4jConfig, rmqConfig, schemaConfig } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jModule } from 'nest-neo4j';
@@ -36,6 +35,5 @@ import { MessageReactionModule } from './message_reaction/message_reaction.modul
     EditedMessageModule,
     MessageReactionModule,
   ],
-  controllers: [GraphStoreController],
 })
 export class GraphStoreModule {}
