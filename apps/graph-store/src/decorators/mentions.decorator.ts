@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Context } from 'grammy';
 
-export const Mentions = createParamDecorator(
+export const DMentions = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): string[] => {
     const context: Context = ctx.getArgs()[0] as Context;
     const { update } = context;
