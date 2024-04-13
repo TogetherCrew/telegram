@@ -28,4 +28,4 @@ COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD [ "node", "dist/bot/main" ]
+CMD [ "node", "dist/apps/bot/main" ]
