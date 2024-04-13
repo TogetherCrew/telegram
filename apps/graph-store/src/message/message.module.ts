@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jModule } from 'nest-neo4j/dist';
 import { ChatService } from '../chat/chat.service';
 import { UserService } from '../user/user.service';
-import { JoinedModule } from '../joined/joined.module';
 import { JoinedService } from '../joined/joined.service';
 import { RepliedService } from '../replied/replied.service';
 import { MentionedService } from '../mentioned/mentioned.service';
@@ -19,7 +18,6 @@ import { MentionedService } from '../mentioned/mentioned.service';
       useFactory: (configService: ConfigService) => configService.get('neo4j'),
       inject: [ConfigService],
     }),
-    JoinedModule,
   ],
   providers: [
     MessageService,
