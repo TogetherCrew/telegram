@@ -26,7 +26,7 @@ export class EventStoreController {
     );
   }
 
-  @MessagePattern(UpdateEvent.EDITED_MESSAGE)
+  @MessagePattern(UpdateEvent.EDITED_MESSAGE_TEXT)
   async edited_message(@Payload() data): Promise<void> {
     const { update } = data;
     const { edited_message } = update;
@@ -34,7 +34,7 @@ export class EventStoreController {
     await this.eventsService.createEvent(
       edited_message.date,
       edited_message.chat.id,
-      UpdateEvent.EDITED_MESSAGE,
+      UpdateEvent.EDITED_MESSAGE_TEXT,
       update,
     );
   }
