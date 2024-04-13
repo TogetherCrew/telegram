@@ -6,7 +6,6 @@ import { RmqInterceptor } from '../interceptors/rmq.interceptor';
 import { Chat, ChatMemberUpdated } from 'grammy/types';
 import { ChatMemberService } from './chat_member.service';
 import { DChat } from '../decorators/chat.decorator';
-import { FilterQuery } from 'grammy';
 
 type Status =
   | 'member'
@@ -38,41 +37,44 @@ export class ChatMemberController {
     @DChatMemberUpdated() chat_member: ChatMemberUpdated,
   ): Promise<void> {
     this.logger.log(`Received ${UpdateEvent.CHAT_MEMBER} for ${chat.id}`);
+    try {
+      const {
+        date,
+        new_chat_member: { user, status },
+        old_chat_member,
+        from,
+      } = chat_member;
 
-    const {
-      date,
-      new_chat_member: { user, status },
-      old_chat_member,
-      from,
-    } = chat_member;
+      const action = this.determineAction(old_chat_member.status, status);
 
-    const action = this.determineAction(old_chat_member.status, status);
-
-    switch (action) {
-      case 'LEFT':
-        this.chatMemberService.left(chat, user, date, from);
-        break;
-      case 'BANNED':
-        this.chatMemberService.banned(chat, user, date, from);
-        break;
-      case 'JOINED':
-        this.chatMemberService.joined(chat, user, date, from);
-        break;
-      case 'UNBANNED':
-        this.chatMemberService.unbanned(chat, user, date, from);
-        break;
-      case 'RESTRICTED':
-        this.chatMemberService.restricted(chat, user, date, from);
-        break;
-      case 'UNRESTRICTED':
-        this.chatMemberService.unrestricted(chat, user, date, from);
-        break;
-      case 'PROMOTED':
-        this.chatMemberService.promoted(chat, user, date, from);
-        break;
-      case 'DEMOTED':
-        this.chatMemberService.demoted(chat, user, date, from);
-        break;
+      switch (action) {
+        case 'LEFT':
+          this.chatMemberService.left(chat, user, date, from);
+          break;
+        case 'BANNED':
+          this.chatMemberService.banned(chat, user, date, from);
+          break;
+        case 'JOINED':
+          this.chatMemberService.joined(chat, user, date, from);
+          break;
+        case 'UNBANNED':
+          this.chatMemberService.unbanned(chat, user, date, from);
+          break;
+        case 'RESTRICTED':
+          this.chatMemberService.restricted(chat, user, date, from);
+          break;
+        case 'UNRESTRICTED':
+          this.chatMemberService.unrestricted(chat, user, date, from);
+          break;
+        case 'PROMOTED':
+          this.chatMemberService.promoted(chat, user, date, from);
+          break;
+        case 'DEMOTED':
+          this.chatMemberService.demoted(chat, user, date, from);
+          break;
+      }
+    } catch (error) {
+      this.logger.error(error);
     }
   }
 
