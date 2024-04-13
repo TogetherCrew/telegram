@@ -21,14 +21,10 @@ export class ChatService {
   constructor(private readonly neo4jService: Neo4jService) {}
 
   async createOrUpdate(chat: Chat, tx?: Transaction): Promise<void> {
-    try {
-      if (tx) {
-        tx.run(CREATE_OR_UPDATE_CHAT, { chat });
-      } else {
-        await this.neo4jService.write(CREATE_OR_UPDATE_CHAT, { chat });
-      }
-    } catch (error) {
-      this.logger.error(error);
+    if (tx) {
+      tx.run(CREATE_OR_UPDATE_CHAT, { chat });
+    } else {
+      await this.neo4jService.write(CREATE_OR_UPDATE_CHAT, { chat });
     }
   }
 }
