@@ -3,7 +3,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventStoreController } from './event-store.controller';
 import { EventStoreService } from './event-store.service';
-import { Events } from '@app/common';
+import { UpdateEvent } from '@app/common';
 import { Message, Update } from 'grammy/types';
 import { RmqService } from '@app/common';
 
@@ -44,12 +44,13 @@ describe('EventStoreController', () => {
         date: 1234,
         chat: { id: 1234 },
       } as Message;
-      await controller.message(mockMessage);
+      const mockUpdate = { message: mockMessage };
+      await controller.message({ update: mockUpdate });
       expect(eventsService.createEvent).toHaveBeenCalledWith(
         mockMessage.date,
         mockMessage.chat.id,
-        Events.Message,
-        mockMessage,
+        UpdateEvent.MESSAGE,
+        mockUpdate,
       );
     });
   });
@@ -62,11 +63,11 @@ describe('EventStoreController', () => {
           chat: { id: 1234 },
         },
       } as Update;
-      await controller.edited_message(mockUpdate);
+      await controller.edited_message({ update: mockUpdate });
       expect(eventsService.createEvent).toHaveBeenCalledWith(
         mockUpdate.edited_message.date,
         mockUpdate.edited_message.chat.id,
-        Events.EditedMessage,
+        UpdateEvent.EDITED_MESSAGE,
         mockUpdate,
       );
     });
@@ -80,11 +81,11 @@ describe('EventStoreController', () => {
           chat: { id: 1234 },
         },
       } as Update;
-      await controller.message_reaction(mockUpdate);
+      await controller.message_reaction({ update: mockUpdate });
       expect(eventsService.createEvent).toHaveBeenCalledWith(
         mockUpdate.message_reaction.date,
         mockUpdate.message_reaction.chat.id,
-        Events.MessageReaction,
+        UpdateEvent.MESSAGE_REACTION,
         mockUpdate,
       );
     });
@@ -98,11 +99,11 @@ describe('EventStoreController', () => {
           chat: { id: 1234 },
         },
       } as Update;
-      await controller.chat_member(mockUpdate);
+      await controller.chat_member({ update: mockUpdate });
       expect(eventsService.createEvent).toHaveBeenCalledWith(
         mockUpdate.chat_member.date,
         mockUpdate.chat_member.chat.id,
-        Events.ChatMemberUpdated,
+        UpdateEvent.CHAT_MEMBER,
         mockUpdate,
       );
     });
