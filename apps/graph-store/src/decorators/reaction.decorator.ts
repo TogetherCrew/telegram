@@ -1,8 +1,9 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Context } from 'grammy';
+import { MessageReactionUpdated } from 'grammy/types';
 
-export const Reaction = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+export const DMessageReactionUpdated = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext): MessageReactionUpdated => {
     const context: Context = ctx.getArgs()[0] as Context;
     const { update } = context;
     return update.message_reaction;
