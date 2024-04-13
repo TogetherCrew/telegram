@@ -1,5 +1,5 @@
 import { UpdateEvent } from '@app/common';
-import { Controller, Logger } from '@nestjs/common';
+import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Chat, User, Message, MessageEntity } from 'grammy/types';
 import { DChat } from '../decorators/chat.decorator';
@@ -13,8 +13,10 @@ import { MentionedService } from '../mentioned/mentioned.service';
 import { MessageService } from '../message/message.service';
 import { RepliedService } from '../replied/replied.service';
 import { UserService } from '../user/user.service';
+import { RmqInterceptor } from '../interceptors/rmq.interceptor';
 
 @Controller('edited-message')
+@UseInterceptors(RmqInterceptor)
 export class EditedMessageController {
   private readonly logger = new Logger(EditedMessageController.name);
 
