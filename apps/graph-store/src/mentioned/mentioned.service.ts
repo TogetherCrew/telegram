@@ -24,18 +24,14 @@ export class MentionedService {
     mentions: MessageEntity[],
     tx?: Transaction,
   ): Promise<any> {
-    try {
-      if (tx) {
-        tx.run(CREATE_MENTIONED, { chat, message, mentions });
-      } else {
-        await this.neo4jService.write(CREATE_MENTIONED, {
-          chat,
-          message,
-          mentions,
-        });
-      }
-    } catch (error) {
-      this.logger.error(error);
+    if (tx) {
+      tx.run(CREATE_MENTIONED, { chat, message, mentions });
+    } else {
+      await this.neo4jService.write(CREATE_MENTIONED, {
+        chat,
+        message,
+        mentions,
+      });
     }
   }
 }

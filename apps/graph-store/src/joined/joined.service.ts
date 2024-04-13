@@ -31,14 +31,10 @@ export class JoinedService {
     date: number = 0,
     tx?: Transaction,
   ): Promise<any> {
-    try {
-      if (tx) {
-        tx.run(CREATE_JOINED, { chat, user, date });
-      } else {
-        await this.neo4jService.write(CREATE_JOINED, { chat, user, date });
-      }
-    } catch (error) {
-      this.logger.error(error);
+    if (tx) {
+      tx.run(CREATE_JOINED, { chat, user, date });
+    } else {
+      await this.neo4jService.write(CREATE_JOINED, { chat, user, date });
     }
   }
 }

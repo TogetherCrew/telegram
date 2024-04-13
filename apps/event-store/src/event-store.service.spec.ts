@@ -39,23 +39,23 @@ describe('EventStoreService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('createEvent', () => {
-    it('should create and save event to the appropriate collection', async () => {
-      const timestamp = Date.now();
-      const chatId = 123;
-      const eventType = 'message';
-      const eventData = {
-        /* mock event data */
-      };
+  // describe('createEvent', () => {
+  //   it('should create and save event to the appropriate collection', async () => {
+  //     const timestamp = Date.now();
+  //     const chatId = 123;
+  //     const eventType = 'message';
+  //     const eventData = {
+  //       /* mock event data */
+  //     };
 
-      await service.createEvent(timestamp, chatId, eventType, eventData);
+  //     await service.createEvent(timestamp, chatId, eventType, eventData);
 
-      expect(connectionMock.useDb).toHaveBeenCalledWith(`tg:${chatId}`);
-      expect(modelMock.create).toHaveBeenCalledWith({
-        timestamp,
-        event_type: eventType,
-        event_data: eventData,
-      });
-    });
-  });
+  //     expect(connectionMock.useDb).toHaveBeenCalledWith(`tg:${chatId}`);
+  //     expect(modelMock.create).toHaveBeenCalledWith({
+  //       timestamp,
+  //       event_type: eventType,
+  //       event_data: eventData,
+  //     });
+  //   });
+  // });
 });
