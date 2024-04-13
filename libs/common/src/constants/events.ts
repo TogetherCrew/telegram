@@ -5,8 +5,13 @@ interface FilterQueryDictionary {
 }
 
 export const UpdateEvent: FilterQueryDictionary = {
-  MESSAGE_TEXT: 'message:text',
   CHAT_MEMBER: 'chat_member',
-  EDITED_MESSAGE: 'edited_message',
   MESSAGE_REACTION: 'message_reaction',
+  EDITED_MESSAGE: 'edited_message',
+  MESSAGE: 'message',
+};
+
+export const IgnoreEvent: FilterQueryDictionary = {
+  MESSAGE_NEW_MEMBERS: 'message:new_chat_members',
+  MESSAGE_LEFT_MEMBER: 'message:left_chat_member',
 };

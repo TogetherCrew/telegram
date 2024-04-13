@@ -30,7 +30,7 @@ export class MessageController {
     private readonly mentionedService: MentionedService,
   ) {}
 
-  @MessagePattern(UpdateEvent.MESSAGE_TEXT)
+  @MessagePattern(UpdateEvent.MESSAGE)
   async message(
     @DChat() chat: Chat,
     @DUser() user: User,
