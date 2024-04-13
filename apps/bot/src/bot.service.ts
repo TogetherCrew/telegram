@@ -10,9 +10,9 @@ export class BotService implements OnModuleInit {
   private readonly logger = new Logger(BotService.name);
 
   constructor(
-    @Inject(Services.EventStore.name) private eventClient: ClientProxy,
-    @Inject(Services.GraphStore.name) private graphClient: ClientProxy,
-    private configService: ConfigService,
+    @Inject(Services.EventStore.name) private readonly eventClient: ClientProxy,
+    @Inject(Services.GraphStore.name) private readonly graphClient: ClientProxy,
+    private readonly configService: ConfigService,
   ) {
     this.bot = new Bot(configService.get<string>('telegram.token'));
 

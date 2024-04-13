@@ -3,6 +3,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BotService } from './bot.service';
 import { Services } from '@app/common';
+import { ConfigService } from '@nestjs/config';
 
 describe('BotService', () => {
   let service: BotService;
@@ -21,6 +22,15 @@ describe('BotService', () => {
           provide: Services.GraphStore.name,
           useValue: {
             emit: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn((key) => {
+              if (key === 'telegram.token') return 'mocked value';
+              return null;
+            }),
           },
         },
       ],
