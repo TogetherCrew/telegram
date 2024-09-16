@@ -1,11 +1,8 @@
-version: '3.9'
-
-x-telegram-common:
-  &telegram-common
+x-telegram-common: &telegram-common
   build:
     context: .
     dockerfile: Dockerfile
-    target: production
+    target: development
   restart: unless-stopped
   env_file:
     - ./.env
@@ -69,24 +66,28 @@ services:
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
       - NEO4J_AUTH=neo4j/password
     healthcheck:
-      test: ["CMD" ,"wget", "http://localhost:7474"]
+      test: [ "CMD", "wget", "http://localhost:7474" ]
       interval: 1m30s
       timeout: 10s
       retries: 2
       start_period: 40s
 
   telegram-bot:
-    <<: [*telegram-common]
+    <<: [ *telegram-common ]
     container_name: telegram-bot
     command: npm run start bot
   telegram-events:
-    <<: [*telegram-common]
+    <<: [ *telegram-common ]
     container_name: telegram-events
     command: npm run start event-store
   telegram-graph:
-    <<: [*telegram-common]
+    <<: [ *telegram-common ]
     container_name: telegram-graph
     command: npm run start graph-store
+  telegram-question:
+    <<: [ *telegram-common ]
+    container_name: telegram-question
+    command: npm run start question-service
 
 volumes:
   mongo_data:

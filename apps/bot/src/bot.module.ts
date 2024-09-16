@@ -19,7 +19,8 @@ import { Services } from '@app/common';
     }),
     RmqModule.register(Services.EventStore),
     RmqModule.register(Services.GraphStore),
+    RmqModule.register(Services.TGQuestionService),
   ],
   providers: [BotService],
 })
-export class BotModule {}
+export class BotModule { }

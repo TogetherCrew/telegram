@@ -11,4 +11,8 @@ export const Services = {
     name: 'graph_store_service',
     queue: 'graph_store_queue',
   },
+  TGQuestionService: {
+    name: 'tg_question_service',
+    queue: 'tg_question_queue',
+  },
 };

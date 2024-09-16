@@ -12,6 +12,8 @@ export class BotService implements OnModuleInit {
   constructor(
     @Inject(Services.EventStore.name) private readonly eventClient: ClientProxy,
     @Inject(Services.GraphStore.name) private readonly graphClient: ClientProxy,
+    @Inject(Services.TGQuestionService.name)
+    private readonly tgQuestionClient: ClientProxy,
     private readonly configService: ConfigService,
   ) {
     this.bot = new Bot(configService.get<string>('telegram.token'));
@@ -27,6 +29,7 @@ export class BotService implements OnModuleInit {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
         this.eventClient.emit(event, ctx);
         this.graphClient.emit(event, ctx);
+        this.tgQuestionClient.emit(event, ctx);
       });
     });
   }
