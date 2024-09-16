@@ -11,9 +11,10 @@ export class QuestionServiceController {
   ) { }
 
   @MessagePattern(UpdateEvent.MESSAGE)
-  async message(@Payload() data): Promise<void> {
-    const { update } = data;
+  async message(@Payload() payload): Promise<void> {
+    const { update } = payload;
     const { message } = update;
-    this.logger.log('Message received', message);
+    const { data } = await this.questionServiceService.test(message.text);
+    this.logger.log('Result', data);
   }
 }

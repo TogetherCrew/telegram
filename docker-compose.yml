@@ -89,6 +89,12 @@ services:
     container_name: telegram-question
     command: npm run start question-service
 
+  question-service-ext:
+    image: ghcr.io/togethercrew/question-service:main
+    platform: linux/x86_64
+    ports:
+      - 80:80
+
 volumes:
   mongo_data:
   neo4j_data:
