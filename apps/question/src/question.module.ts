@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { QuestionServiceController } from './question-service.controller';
-import { QuestionServiceService } from './question-service.service';
+import { QuestionController } from './question.controller';
+import { QuestionService } from './question.service';
 import {
   schemaConfig,
   rmqConfig,
@@ -22,7 +22,7 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule,
     RmqModule.register(Services.TelegramBot),
   ],
-  controllers: [QuestionServiceController],
-  providers: [QuestionServiceService],
+  controllers: [QuestionController],
+  providers: [QuestionService],
 })
-export class QuestionServiceModule { }
+export class QuestionModule { }

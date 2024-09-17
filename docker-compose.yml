@@ -89,7 +89,7 @@ services:
   telegram-question:
     <<: [ *telegram-common ]
     container_name: telegram-question
-    command: npm run start:dev question-service
+    command: npm run start:dev question
 
   question-service-ext:
     image: ghcr.io/togethercrew/question-service:main

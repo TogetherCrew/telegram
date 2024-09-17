@@ -46,13 +46,13 @@
         "tsConfigPath": "apps/graph-store/tsconfig.app.json"
       }
     },
-    "question-service": {
+    "question": {
       "type": "application",
-      "root": "apps/question-service",
+      "root": "apps/question",
       "entryFile": "main",
-      "sourceRoot": "apps/question-service/src",
+      "sourceRoot": "apps/question/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/question-service/tsconfig.app.json"
+        "tsConfigPath": "apps/question/tsconfig.app.json"
       }
     }
   }

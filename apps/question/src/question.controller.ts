@@ -1,5 +1,5 @@
 import { Controller, Inject, Logger } from '@nestjs/common';
-import { QuestionServiceService } from './question-service.service';
+import { QuestionService } from './question.service';
 import { ClientProxy, MessagePattern, Payload } from '@nestjs/microservices';
 import { Services, TelegramAction, UpdateEvent } from '@app/common';
 import { Context } from 'grammy';
@@ -9,10 +9,10 @@ import { EventsInterceptor } from '@app/common/rmq/interceptors/events.intercept
 
 @Controller()
 @UseInterceptors(EventsInterceptor)
-export class QuestionServiceController {
-  private readonly logger = new Logger(QuestionServiceController.name);
+export class QuestionController {
+  private readonly logger = new Logger(QuestionController.name);
   constructor(
-    private readonly questionServiceService: QuestionServiceService,
+    private readonly questionServiceService: QuestionService,
     @Inject(Services.TelegramBot.name)
     private readonly telegramClient: ClientProxy,
   ) { }
@@ -24,6 +24,8 @@ export class QuestionServiceController {
       text: msg,
       chat: { id: chat_id },
     } = ctx.update?.message;
+    this.logger.log(`Received message ${message_id} from ${chat_id}`);
+
     const {
       data: { label, score },
     } = await this.questionServiceService.test(msg);
@@ -43,5 +45,6 @@ export class QuestionServiceController {
     };
 
     this.telegramClient.emit(TelegramAction.SEND_MESSAGE, data);
+    this.logger.log(`Emitted reponse to message ${message_id} from ${chat_id}`);
   }
 }

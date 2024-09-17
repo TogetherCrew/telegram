@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class QuestionServiceService {
+export class QuestionService {
   private uri: string;
 
   constructor(
