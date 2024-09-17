@@ -12,7 +12,7 @@ import { EventsInterceptor } from '@app/common/rmq/interceptors/events.intercept
 export class QuestionController {
   private readonly logger = new Logger(QuestionController.name);
   constructor(
-    private readonly questionServiceService: QuestionService,
+    private readonly questionService: QuestionService,
     @Inject(Services.TelegramBot.name)
     private readonly telegramClient: ClientProxy,
   ) { }
@@ -28,7 +28,7 @@ export class QuestionController {
 
     const {
       data: { label, score },
-    } = await this.questionServiceService.test(msg);
+    } = await this.questionService.test(msg);
 
     const text = `${label}: ${score}`;
 
