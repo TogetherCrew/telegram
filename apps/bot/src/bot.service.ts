@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { API_CONSTANTS, Bot, RawApi } from 'grammy';
 import { Other } from 'grammy/out/core/api';
-import { Message, ReplyParameters } from 'grammy/types';
+import { Message } from 'grammy/types';
 
 @Injectable()
 export class BotService implements OnModuleInit {

@@ -3,3 +3,4 @@ export * from './neo4j.config';
 export * from './rmq.config';
 export * from './telegram.config';
 export * from './schema.config';
+export * from './question.config';

@@ -4,9 +4,9 @@ import { QuestionServiceService } from './question-service.service';
 import {
   schemaConfig,
   rmqConfig,
-  mongoConfig,
   RmqModule,
   Services,
+  questionConfig,
 } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
@@ -15,7 +15,7 @@ import { HttpModule } from '@nestjs/axios';
   imports: [
     ConfigModule.forRoot({
       validationSchema: schemaConfig,
-      load: [rmqConfig, mongoConfig],
+      load: [rmqConfig, questionConfig],
       isGlobal: true,
     }),
     RmqModule,
