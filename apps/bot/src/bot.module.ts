@@ -9,6 +9,7 @@ import {
   RmqModule,
 } from '@app/common';
 import { Services } from '@app/common';
+import { BotController } from './bot.controller';
 
 @Module({
   imports: [
@@ -19,7 +20,9 @@ import { Services } from '@app/common';
     }),
     RmqModule.register(Services.EventStore),
     RmqModule.register(Services.GraphStore),
+    RmqModule.register(Services.TGQuestionService),
   ],
+  controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule {}
+export class BotModule { }

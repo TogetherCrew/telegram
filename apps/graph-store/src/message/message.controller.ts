@@ -2,7 +2,6 @@ import { UpdateEvent } from '@app/common';
 import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { DChat } from '../decorators/chat.decorator';
-import { RmqInterceptor } from '../interceptors/rmq.interceptor';
 import { MessageService } from './message.service';
 import { DMessage } from '../decorators/message.decorator';
 import { Chat, Message, MessageEntity, User } from 'grammy/types';
@@ -14,9 +13,10 @@ import { MentionedService } from '../mentioned/mentioned.service';
 import { RepliedService } from '../replied/replied.service';
 import { UserService } from '../user/user.service';
 import { Neo4jService } from 'nest-neo4j/dist';
+import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
 
 @Controller('message')
-@UseInterceptors(RmqInterceptor)
+@UseInterceptors(EventsInterceptor)
 export class MessageController {
   private readonly logger = new Logger(MessageController.name);
 
@@ -28,7 +28,7 @@ export class MessageController {
     private readonly joinedService: JoinedService,
     private readonly repliedService: RepliedService,
     private readonly mentionedService: MentionedService,
-  ) {}
+  ) { }
 
   @MessagePattern(UpdateEvent.MESSAGE)
   async message(

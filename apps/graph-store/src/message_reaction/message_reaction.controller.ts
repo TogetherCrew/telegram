@@ -10,10 +10,10 @@ import { DUser } from '../decorators/user.decorator';
 import { JoinedService } from '../joined/joined.service';
 import { UserService } from '../user/user.service';
 import { MessageReactionService } from './message_reaction.service';
-import { RmqInterceptor } from '../interceptors/rmq.interceptor';
+import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
 
 @Controller('message-reaction')
-@UseInterceptors(RmqInterceptor)
+@UseInterceptors(EventsInterceptor)
 export class MessageReactionController {
   private readonly logger = new Logger(MessageReactionController.name);
 
@@ -23,7 +23,7 @@ export class MessageReactionController {
     private readonly userService: UserService,
     private readonly joinedService: JoinedService,
     private readonly messageReactionService: MessageReactionService,
-  ) {}
+  ) { }
 
   @MessagePattern(UpdateEvent.MESSAGE_REACTION)
   async message(

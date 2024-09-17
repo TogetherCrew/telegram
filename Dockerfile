@@ -14,6 +14,7 @@ COPY . .
 RUN npm run build bot
 RUN npm run build event-store
 RUN npm run build graph-store
+RUN npm run build question-service
 
 FROM node:alpine AS production
 

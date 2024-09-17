@@ -25,6 +25,12 @@ describe('BotService', () => {
           },
         },
         {
+          provide: Services.TGQuestionService.name,
+          useValue: {
+            emit: jest.fn(),
+          },
+        },
+        {
           provide: ConfigService,
           useValue: {
             get: jest.fn((key) => {
