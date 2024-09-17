@@ -2,7 +2,7 @@ import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { EventStoreService } from './event-store.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UpdateEvent } from '@app/common';
-import { EventsInterceptor } from './interceptors/events.interceptor';
+import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
 import { API_CONSTANTS } from 'grammy';
 
 @Controller()
@@ -10,7 +10,7 @@ import { API_CONSTANTS } from 'grammy';
 export class EventStoreController {
   private readonly logger = new Logger(EventStoreController.name);
 
-  constructor(private readonly eventsService: EventStoreService) {}
+  constructor(private readonly eventsService: EventStoreService) { }
 
   a = typeof API_CONSTANTS.ALL_UPDATE_TYPES;
 

@@ -2,7 +2,7 @@ import { UpdateEvent } from '@app/common';
 import { Controller, Logger, UseInterceptors } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { DChatMemberUpdated } from '../decorators/chatMemberUpdated.decorator';
-import { RmqInterceptor } from '../interceptors/rmq.interceptor';
+import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
 import { Chat, ChatMemberUpdated } from 'grammy/types';
 import { ChatMemberService } from './chat_member.service';
 import { DChat } from '../decorators/chat.decorator';
@@ -25,11 +25,11 @@ type Action =
   | 'DEMOTED';
 
 @Controller('chat-member')
-@UseInterceptors(RmqInterceptor)
+@UseInterceptors(EventsInterceptor)
 export class ChatMemberController {
   private readonly logger = new Logger(ChatMemberController.name);
 
-  constructor(private readonly chatMemberService: ChatMemberService) {}
+  constructor(private readonly chatMemberService: ChatMemberService) { }
 
   @MessagePattern(UpdateEvent.CHAT_MEMBER)
   async chat_member(

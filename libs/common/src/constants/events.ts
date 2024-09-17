@@ -15,3 +15,7 @@ export const IgnoreEvent: FilterQueryDictionary = {
   MESSAGE_NEW_MEMBERS: 'message:new_chat_members',
   MESSAGE_LEFT_MEMBER: 'message:left_chat_member',
 };
+
+export const TelegramAction = {
+  SEND_MESSAGE: 'send_message',
+};

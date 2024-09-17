@@ -13,10 +13,10 @@ import { MentionedService } from '../mentioned/mentioned.service';
 import { MessageService } from '../message/message.service';
 import { RepliedService } from '../replied/replied.service';
 import { UserService } from '../user/user.service';
-import { RmqInterceptor } from '../interceptors/rmq.interceptor';
+import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
 
 @Controller('edited-message')
-@UseInterceptors(RmqInterceptor)
+@UseInterceptors(EventsInterceptor)
 export class EditedMessageController {
   private readonly logger = new Logger(EditedMessageController.name);
 
@@ -28,7 +28,7 @@ export class EditedMessageController {
     private readonly joinedService: JoinedService,
     private readonly repliedService: RepliedService,
     private readonly mentionedService: MentionedService,
-  ) {}
+  ) { }
 
   @MessagePattern(UpdateEvent.EDITED_MESSAGE)
   async chat_member(

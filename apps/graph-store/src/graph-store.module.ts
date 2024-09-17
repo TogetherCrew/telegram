@@ -36,4 +36,4 @@ import { MessageReactionModule } from './message_reaction/message_reaction.modul
     MessageReactionModule,
   ],
 })
-export class GraphStoreModule {}
+export class GraphStoreModule { }
