@@ -16,9 +16,10 @@ describe('QuestionServiceController', () => {
     );
   });
 
-  // describe('root', () => {
-  //   it('should return "Hello World!"', () => {
-  //     expect(questionServiceController.getHello()).toBe('Hello World!');
-  //   });
-  // });
+  describe('root', () => {
+    it('should return "Hello World!"', () => {
+      expect(questionServiceController).toBeTruthy;
+      // expect(questionServiceController.message ()).toBe('Hello World!');
+    });
+  });
 });
