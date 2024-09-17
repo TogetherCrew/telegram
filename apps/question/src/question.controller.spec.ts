@@ -1,25 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QuestionController } from './question.controller';
 import { QuestionService } from './question.service';
+import { RmqService } from '@app/common';
+
+// Mock RmqService
+class RmqServiceMock {
+  ack = jest.fn();
+}
 
 describe('QuestionController', () => {
-  let questionController: QuestionController;
+  let controller: QuestionController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [QuestionController],
-      providers: [QuestionService],
+      providers: [
+        {
+          provide: QuestionService,
+          useValue: {
+            test: jest.fn(),
+          },
+        },
+        { provide: RmqService, useClass: RmqServiceMock },
+      ],
     }).compile();
 
-    questionController = app.get<QuestionServiceController>(
-      QuestionServiceController,
-    );
+    controller = app.get<QuestionController>(QuestionController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(questionController).toBeTruthy;
-      // expect(questionServiceController.message ()).toBe('Hello World!');
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 });
