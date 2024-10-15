@@ -31,7 +31,10 @@ export class BotService implements OnModuleInit {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
         this.eventClient.emit(event, ctx);
         this.graphClient.emit(event, ctx);
-        if (!ctx.update.message.from.is_bot) {
+        if (
+          event != UpdateEvent.CHAT_MEMBER &&
+          !ctx.update.message.from?.is_bot
+        ) {
           this.tgQuestionClient.emit(event, ctx);
         }
         return;
