@@ -29,14 +29,20 @@ export class BotService implements OnModuleInit {
     Object.values(UpdateEvent).map((event) => {
       this.bot.on(event, (ctx) => {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
-        this.eventClient.emit(event, ctx);
-        this.graphClient.emit(event, ctx);
-        if (
-          event != UpdateEvent.CHAT_MEMBER &&
-          !ctx.update.message.from?.is_bot
-        ) {
-          this.tgQuestionClient.emit(event, ctx);
+
+        try {
+          this.eventClient.emit(event, ctx);
+          this.graphClient.emit(event, ctx);
+          if (
+            event != UpdateEvent.CHAT_MEMBER &&
+            !ctx.update.message.from.is_bot
+          ) {
+            this.tgQuestionClient.emit(event, ctx);
+          }
+        } catch (error) {
+          this.logger.error(error);
         }
+
         return;
       });
     });
