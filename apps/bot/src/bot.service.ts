@@ -22,7 +22,8 @@ export class BotService implements OnModuleInit {
 
     this.bot.command('start', async (ctx) => {
       await ctx.reply(
-        '<b>Welcome, {username}!</b>\n\n<u><b>Get Started</b></u>\n\nTo get you up and running, there are two simple steps:\n\n<b>1. Add me to your group or channel</b>\n\nTo add me to your group or channel, simply tap on my username (at the top) and select <i>"Add to Group or Channel"</i>.\n\nSelect the group or channel you want.\n\nI will need <b>Admin Rights</b>, but you can disable all additional privileges.\n\n<b>2. Verify me on <a href="https://app.togethercrew.com">app.togethercrew.com</a></b>\n\nHead over to <a href="https://app.togethercrew.com">https://app.togethercrew.com</a>.\n\nIn your community settings, add a Telegram platform.\n\nCopy the verify command into your group and send it.\n\nI will take care of the rest.',
+        '<b>Welcome!</b>\n\n<u><b>Get Started</b></u>\n\nTo get you up and running, there are two simple steps:\n\n<b>1. Add me to your group or channel</b>\n\nTo add me to your group or channel, simply tap on my username (at the top) and select <i>"Add to Group or Channel"</i>.\n\nSelect the group or channel you want.\n\nI will need <b>Admin Rights</b>, but you can disable all additional privileges.\n\n<b>2. Verify me on <a href="https://app.togethercrew.com">app.togethercrew.com</a></b>\n\nHead over to <a href="https://app.togethercrew.com">https://app.togethercrew.com</a>.\n\nIn your community settings, add a Telegram platform.\n\nCopy the verify command into your group and send it.\n\nI will take care of the rest.',
+        { parse_mode: 'HTML' },
       );
     });
 
