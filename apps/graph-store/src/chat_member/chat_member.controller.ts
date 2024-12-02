@@ -29,7 +29,7 @@ type Action =
 export class ChatMemberController {
   private readonly logger = new Logger(ChatMemberController.name);
 
-  constructor(private readonly chatMemberService: ChatMemberService) { }
+  constructor(private readonly chatMemberService: ChatMemberService) {}
 
   @MessagePattern(UpdateEvent.CHAT_MEMBER)
   async chat_member(

@@ -28,7 +28,7 @@ export class EditedMessageController {
     private readonly joinedService: JoinedService,
     private readonly repliedService: RepliedService,
     private readonly mentionedService: MentionedService,
-  ) { }
+  ) {}
 
   @MessagePattern(UpdateEvent.EDITED_MESSAGE)
   async chat_member(

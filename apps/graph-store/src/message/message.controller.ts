@@ -28,7 +28,7 @@ export class MessageController {
     private readonly joinedService: JoinedService,
     private readonly repliedService: RepliedService,
     private readonly mentionedService: MentionedService,
-  ) { }
+  ) {}
 
   @MessagePattern(UpdateEvent.MESSAGE)
   async message(

@@ -15,7 +15,7 @@ export class QuestionController {
     private readonly questionService: QuestionService,
     @Inject(Services.TelegramBot.name)
     private readonly telegramClient: ClientProxy,
-  ) { }
+  ) {}
 
   @MessagePattern(UpdateEvent.MESSAGE)
   async message(@Payload() ctx: Context): Promise<void> {

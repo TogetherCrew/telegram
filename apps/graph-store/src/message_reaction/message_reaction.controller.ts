@@ -23,7 +23,7 @@ export class MessageReactionController {
     private readonly userService: UserService,
     private readonly joinedService: JoinedService,
     private readonly messageReactionService: MessageReactionService,
-  ) { }
+  ) {}
 
   @MessagePattern(UpdateEvent.MESSAGE_REACTION)
   async message(

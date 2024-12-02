@@ -10,7 +10,7 @@ import { API_CONSTANTS } from 'grammy';
 export class EventStoreController {
   private readonly logger = new Logger(EventStoreController.name);
 
-  constructor(private readonly eventsService: EventStoreService) { }
+  constructor(private readonly eventsService: EventStoreService) {}
 
   a = typeof API_CONSTANTS.ALL_UPDATE_TYPES;
 

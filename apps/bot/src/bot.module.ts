@@ -25,4 +25,4 @@ import { BotController } from './bot.controller';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule { }
+export class BotModule {}

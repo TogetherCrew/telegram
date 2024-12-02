@@ -25,4 +25,4 @@ import { HttpModule } from '@nestjs/axios';
   controllers: [QuestionController],
   providers: [QuestionService],
 })
-export class QuestionModule { }
+export class QuestionModule {}
