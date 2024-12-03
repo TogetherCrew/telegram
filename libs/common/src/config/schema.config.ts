@@ -17,4 +17,7 @@ export const schemaConfig = Joi.object({
   NEO4J_PORT: Joi.number().default(7687),
   NEO4J_USER: Joi.string().required(),
   NEO4J_PASS: Joi.string().required(),
+
+  TEMPORAL_URI: Joi.string().default('localhost:7233'),
+  TEMPORAL_QUEUE: Joi.string().default('TEMPORAL_QUEUE_LIGHT'),
 });
