@@ -59,7 +59,7 @@ export class BotService implements OnModuleInit {
     await this.bot.start({
       allowed_updates: API_CONSTANTS.ALL_UPDATE_TYPES,
     });
-    this.bot.api.setMyCommands([
+    await this.bot.api.setMyCommands([
       { command: 'start', description: 'Get started with the TogetherCrewBot' },
       { command: 'verify', description: 'Verify your group.' },
     ]);
@@ -123,6 +123,13 @@ export class BotService implements OnModuleInit {
     const chat = ctx.chat;
     const from = ctx.from;
 
+    if (!token || !chat || !from) {
+      await ctx.reply(
+        'Not enough data to complete this request. Reach out to our support team.',
+      );
+      return;
+    }
+
     try {
       const handle = await this.temporalClient.start('TelegramVerifyWorkflow', {
         taskQueue: this.configService.get<string>('temporal.queue'),
@@ -135,7 +142,7 @@ export class BotService implements OnModuleInit {
     } catch (error) {
       console.error(error);
       await ctx.reply(
-        'Something unexpected happened. Please reach out to our support team.',
+        'Something unexpected happened. Reach out to our support team.',
       );
     }
   };

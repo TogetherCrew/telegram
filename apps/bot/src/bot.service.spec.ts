@@ -41,7 +41,9 @@ describe('BotService', () => {
         },
         {
           provide: 'TemporalQueue_default',
-          useValue: {},
+          useValue: {
+            start: jest.fn(),
+          },
         },
       ],
     }).compile();

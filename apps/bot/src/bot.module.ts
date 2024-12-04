@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-// import { BotUpdate } from './bot.update';
+
 import {
   schemaConfig,
   telegramConfig,
@@ -29,9 +29,15 @@ import { Connection } from '@temporalio/client';
       useFactory: async (config: ConfigService) => {
         const uri = config.get('temporal.uri');
         console.log('uri', uri);
-        const connection = await Connection.connect({
-          address: uri,
-        });
+        let connection: Connection;
+        try {
+          connection = await Connection.connect({
+            address: uri,
+          });
+        } catch (error) {
+          console.error('Failed to connect to Temporal:', error);
+          throw error;
+        }
         return { connection };
       },
     }),
