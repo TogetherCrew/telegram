@@ -39,6 +39,10 @@ describe('BotService', () => {
             }),
           },
         },
+        {
+          provide: 'TemporalQueue_default',
+          useValue: {},
+        },
       ],
     }).compile();
 
