@@ -3,8 +3,7 @@ FROM node:alpine AS development
 WORKDIR /usr/src/app
 
 RUN apk update
-RUN apk add --update --no-cache python3 make g++
-RUN apk add libc6-compat
+RUN apk add --update --no-cache python3 make g++ libc6-compat openssl
 
 COPY package*.json ./
 
