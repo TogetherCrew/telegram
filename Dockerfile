@@ -1,9 +1,9 @@
-FROM node:alpine AS development
+FROM node:slim AS development
 
 WORKDIR /usr/src/app
 
 RUN apk update
-RUN apk add --update --no-cache python3 make g++ libc6-compat openssl
+RUN apk add --update --no-cache python3 make g++
 
 COPY package*.json ./
 
@@ -16,7 +16,7 @@ RUN npm run build event-store
 RUN npm run build graph-store
 RUN npm run build question
 
-FROM node:alpine AS production
+FROM node:slim AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
