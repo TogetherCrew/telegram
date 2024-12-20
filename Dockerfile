@@ -2,8 +2,8 @@ FROM node:slim AS development
 
 WORKDIR /usr/src/app
 
-RUN apk update
-RUN apk add --update --no-cache python3 make g++
+# RUN apk update
+# RUN apk add --update --no-cache python3 make g++
 
 COPY package*.json ./
 
