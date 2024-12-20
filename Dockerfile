@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 RUN apk update
 RUN apk add --update --no-cache python3 make g++
+RUN apk add libc6-compat
 
 COPY package*.json ./
 
