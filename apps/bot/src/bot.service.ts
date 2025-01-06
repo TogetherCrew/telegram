@@ -34,13 +34,13 @@ export class BotService implements OnModuleInit {
     Object.values(UpdateEvent).map((event) => {
       this.bot.on(event, (ctx: Context) => {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
-        this.process(event, ctx.update);
+        this.processEvent(event, ctx.update);
         try {
           if (
             event != UpdateEvent.CHAT_MEMBER &&
             !ctx.update.message.from.is_bot
           ) {
-            this.tgQuestionClient.emit(event, ctx);
+            this.processQuestion(ctx);
           }
         } catch (error) {
           this.logger.error(error);
@@ -143,12 +143,24 @@ export class BotService implements OnModuleInit {
     }
   };
 
-  protected process = async (event: string, update: Update) => {
+  protected processEvent = async (event: string, update: Update) => {
     try {
       await this.temporalClient.start('TelegramEventWorkflow', {
         taskQueue: this.configService.get<string>('temporal.queue'),
         args: [{ event, update }],
         workflowId: `telegram:event:${update.update_id}`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  protected processQuestion = async (ctx: Context) => {
+    try {
+      await this.temporalClient.start('TelegramQuestionWorkflow', {
+        taskQueue: this.configService.get<string>('temporal.queue'),
+        args: [{ ctx }],
+        workflowId: `telegram:question:${ctx.update.update_id}`,
       });
     } catch (error) {
       console.error(error);
