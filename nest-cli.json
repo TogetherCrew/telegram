@@ -27,33 +27,6 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
-    },
-    "event-store": {
-      "type": "application",
-      "root": "apps/event-store",
-      "entryFile": "main",
-      "sourceRoot": "apps/event-store/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/event-store/tsconfig.app.json"
-      }
-    },
-    "graph-store": {
-      "type": "application",
-      "root": "apps/graph-store",
-      "entryFile": "main",
-      "sourceRoot": "apps/graph-store/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/graph-store/tsconfig.app.json"
-      }
-    },
-    "question": {
-      "type": "application",
-      "root": "apps/question",
-      "entryFile": "main",
-      "sourceRoot": "apps/question/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/question/tsconfig.app.json"
-      }
     }
   }
 }
