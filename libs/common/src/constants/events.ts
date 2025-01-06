@@ -17,5 +17,5 @@ export const IgnoreEvent: FilterQueryDictionary = {
 };
 
 export const TelegramAction = {
-  SEND_MESSAGE: 'send_message',
+  SEND_MESSAGE: 'SEND_MESSAGE',
 };
