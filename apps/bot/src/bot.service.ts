@@ -14,10 +14,8 @@ export class BotService implements OnModuleInit {
   private readonly logger = new Logger(BotService.name);
 
   constructor(
-    // @Inject(Services.EventStore.name) private readonly eventClient: ClientProxy,
-    // @Inject(Services.GraphStore.name) private readonly graphClient: ClientProxy,
-    // @Inject(Services.TGQuestionService.name)
-    // private readonly tgQuestionClient: ClientProxy,
+    @Inject(Services.TGQuestionService.name)
+    private readonly tgQuestionClient: ClientProxy,
     private readonly configService: ConfigService,
     @InjectTemporalClient()
     private readonly temporalClient: WorkflowClient,
@@ -37,18 +35,16 @@ export class BotService implements OnModuleInit {
       this.bot.on(event, (ctx: Context) => {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
         this.process(event, ctx.update);
-        // try {
-        //   this.eventClient.emit(event, ctx);
-        //   this.graphClient.emit(event, ctx);
-        //   if (
-        //     event != UpdateEvent.CHAT_MEMBER &&
-        //     !ctx.update.message.from.is_bot
-        //   ) {
-        //     this.tgQuestionClient.emit(event, ctx);
-        //   }
-        // } catch (error) {
-        //   this.logger.error(error);
-        // }
+        try {
+          if (
+            event != UpdateEvent.CHAT_MEMBER &&
+            !ctx.update.message.from.is_bot
+          ) {
+            this.tgQuestionClient.emit(event, ctx);
+          }
+        } catch (error) {
+          this.logger.error(error);
+        }
 
         return;
       });
