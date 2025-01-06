@@ -14,7 +14,7 @@ import { EventsInterceptor } from '@app/common/rmq/interceptors/events.intercept
 @UseInterceptors(EventsInterceptor)
 export class BotController {
   private readonly logger = new Logger(BotController.name);
-  constructor(private readonly botService: BotService) { }
+  constructor(private readonly botService: BotService) {}
 
   @MessagePattern(TelegramAction.SEND_MESSAGE)
   async sendMessage(@Payload() payload: any): Promise<void> {

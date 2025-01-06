@@ -42,4 +42,4 @@ import { Connection } from '@temporalio/client';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule { }
+export class BotModule {}
