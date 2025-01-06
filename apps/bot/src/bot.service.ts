@@ -5,7 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { WorkflowClient } from '@temporalio/client';
 import { API_CONSTANTS, Bot, Context, RawApi } from 'grammy';
 import { Other } from 'grammy/out/core/api';
-import { Message } from 'grammy/types';
+import { Message, Update } from 'grammy/types';
 import { InjectTemporalClient } from 'nestjs-temporal';
 
 @Injectable()
@@ -14,8 +14,6 @@ export class BotService implements OnModuleInit {
   private readonly logger = new Logger(BotService.name);
 
   constructor(
-    @Inject(Services.EventStore.name) private readonly eventClient: ClientProxy,
-    @Inject(Services.GraphStore.name) private readonly graphClient: ClientProxy,
     @Inject(Services.TGQuestionService.name)
     private readonly tgQuestionClient: ClientProxy,
     private readonly configService: ConfigService,
@@ -34,12 +32,10 @@ export class BotService implements OnModuleInit {
     });
 
     Object.values(UpdateEvent).map((event) => {
-      this.bot.on(event, (ctx) => {
+      this.bot.on(event, (ctx: Context) => {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
-
+        this.process(event, ctx.update);
         try {
-          this.eventClient.emit(event, ctx);
-          this.graphClient.emit(event, ctx);
           if (
             event != UpdateEvent.CHAT_MEMBER &&
             !ctx.update.message.from.is_bot
@@ -144,6 +140,18 @@ export class BotService implements OnModuleInit {
       await ctx.reply(
         'Something unexpected happened. Reach out to our support team.',
       );
+    }
+  };
+
+  protected process = async (event: string, update: Update) => {
+    try {
+      await this.temporalClient.start('TelegramEventWorkflow', {
+        taskQueue: this.configService.get<string>('temporal.queue'),
+        args: [{ event, update }],
+        workflowId: `telegram:event:${update.update_id}`,
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 }

@@ -21,8 +21,7 @@ import { Connection } from '@temporalio/client';
       load: [telegramConfig, rmqConfig, temporalConfig],
       isGlobal: true,
     }),
-    RmqModule.register(Services.EventStore),
-    RmqModule.register(Services.GraphStore),
+    RmqModule,
     RmqModule.register(Services.TGQuestionService),
     TemporalModule.registerClientAsync({
       inject: [ConfigService],
