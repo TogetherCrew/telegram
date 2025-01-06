@@ -11,7 +11,7 @@ import { RmqService } from '@app/common';
 
 @Injectable()
 export class EventsInterceptor implements NestInterceptor {
-  constructor(private readonly rmqService: RmqService) { }
+  constructor(private readonly rmqService: RmqService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToRpc().getContext<RmqContext>();

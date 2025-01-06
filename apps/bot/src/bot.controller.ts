@@ -17,7 +17,7 @@ export class BotController {
   constructor(
     private readonly rabbitmqService: RabbitMQService,
     private readonly botService: BotService,
-  ) { }
+  ) {}
 
   onModuleInit() {
     this.registerEvents();

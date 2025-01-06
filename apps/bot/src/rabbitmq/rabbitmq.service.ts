@@ -19,7 +19,7 @@ export class RabbitMQService implements OnModuleInit {
     await this.connect(this.url, this.queue);
   }
 
-  async onModuleDestroy() { }
+  async onModuleDestroy() {}
 
   async connect(url: string, queue: string) {
     try {
@@ -30,7 +30,7 @@ export class RabbitMQService implements OnModuleInit {
     }
   }
 
-  disconnect() { }
+  disconnect() {}
 
   publish(queue: Queue, event: string, content: any) {
     this.rabbitMQ.publish(queue, event, content);

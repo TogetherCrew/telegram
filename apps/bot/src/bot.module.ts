@@ -38,4 +38,4 @@ import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule { }
+export class BotModule {}
