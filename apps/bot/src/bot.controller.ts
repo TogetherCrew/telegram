@@ -4,12 +4,29 @@ import { BotService } from './bot.service';
 // import { TelegramAction } from '@app/common';
 import { RabbitMQService } from './rabbitmq/rabbitmq.service';
 import { Event } from '@togethercrew.dev/tc-messagebroker';
+import { Context } from 'grammy';
 
-// interface MessagePayload {
-//   chat_id: number | string;
-//   text: string;
-//   other: any;
-// }
+interface Payload {
+  event: string;
+  date: Date;
+  content: {
+    communityId: string;
+    route: {
+      source: string;
+      destination: object;
+    };
+    question: {
+      message: string;
+      filters: any;
+    };
+    response: {
+      message: string;
+    };
+    metadata: {
+      ctx: Context;
+    };
+  };
+}
 
 @Controller()
 export class BotController {
@@ -17,7 +34,7 @@ export class BotController {
   constructor(
     private readonly rabbitmqService: RabbitMQService,
     private readonly botService: BotService,
-  ) { }
+  ) {}
 
   onModuleInit() {
     this.registerEvents();
@@ -30,10 +47,17 @@ export class BotController {
     );
   }
 
-  async sendMessage(payload: Record<string, any>): Promise<void> {
+  async sendMessage(payload: Payload): Promise<void> {
     console.log('Payload', payload);
-    // const { chat_id, text, other } = payload;
-    // await this.botService.sendMessage(chat_id, text, other);
+
+    const ctx: Context = payload.content.metadata.ctx;
+    const message: string = payload.content.response.message;
+
+    await this.botService.sendMessage(ctx.message.chat.id, message, {
+      reply_parameters: {
+        message_id: ctx.message.message_id,
+      },
+    });
     return;
   }
 }
