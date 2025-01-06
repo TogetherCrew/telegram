@@ -34,7 +34,7 @@ export class BotController {
   constructor(
     private readonly rabbitmqService: RabbitMQService,
     private readonly botService: BotService,
-  ) {}
+  ) { }
 
   onModuleInit() {
     this.registerEvents();
@@ -51,6 +51,7 @@ export class BotController {
     console.log('Payload', payload);
 
     const ctx: Context = payload.content.metadata.ctx;
+    console.log('ctx', ctx);
     const message: string = payload.content.response.message;
 
     await this.botService.sendMessage(ctx.message.chat.id, message, {
