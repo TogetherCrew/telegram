@@ -1,34 +1,19 @@
-FROM node:slim AS development
+FROM node:slim AS base
 
-WORKDIR /usr/src/app
+WORKDIR /app
+COPY package.json .
+COPY pnpm-lock.yaml .
 
-# RUN apk update
-# RUN apk add --update --no-cache python3 make g++
+FROM base AS prod-deps
+RUN pnpm install --prod --frozen-lockfile
 
-COPY package*.json ./
-
-RUN npm i
-
+FROM base AS build
+RUN pnpm install --frozen-lockfile
 COPY . .
+RUN pnpm build
 
-RUN npm run build bot
-RUN npm run build event-store
-RUN npm run build graph-store
-RUN npm run build question
+FROM base AS production
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
 
-FROM node:slim AS production
-
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm i --omit=dev
-
-COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
-
-CMD [ "node", "dist/apps/bot/main" ]
+CMD [ "pnpm", "start:prod" ]
