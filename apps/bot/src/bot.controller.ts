@@ -52,11 +52,11 @@ export class BotController {
 
     const ctx: Context = payload.content.metadata.ctx;
     console.log('ctx', ctx);
-    const message: string = payload.content.response.message;
+    const reply: string = payload.content.response.message;
 
-    await this.botService.sendMessage(ctx.update.message.chat.id, message, {
+    await this.botService.sendMessage(ctx.update.message.chat.id, reply, {
       reply_parameters: {
-        message_id: ctx.message.message_id,
+        message_id: ctx.update.message.message_id,
       },
     });
     return;
