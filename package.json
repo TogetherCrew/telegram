@@ -29,6 +29,7 @@
     "@nestjs/mongoose": "^10.0.4",
     "@nestjs/platform-express": "^10.3.3",
     "@temporalio/client": "^1.11.5",
+    "@togethercrew.dev/tc-messagebroker": "^0.0.51",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
     "axios": "^1.7.7",

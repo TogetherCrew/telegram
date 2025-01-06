@@ -2,16 +2,12 @@ import { Module } from '@nestjs/common';
 import { BotService } from './bot.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import {
-  schemaConfig,
-  telegramConfig,
-  rmqConfig,
-  RmqModule,
-} from '@app/common';
+import { schemaConfig, telegramConfig, rmqConfig } from '@app/common';
 import { BotController } from './bot.controller';
 import { TemporalModule } from 'nestjs-temporal';
 import { temporalConfig } from '@app/common/config/temporal.config';
 import { Connection } from '@temporalio/client';
+import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -20,7 +16,7 @@ import { Connection } from '@temporalio/client';
       load: [telegramConfig, rmqConfig, temporalConfig],
       isGlobal: true,
     }),
-    RmqModule,
+    RabbitMQModule,
     TemporalModule.registerClientAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
@@ -42,4 +38,4 @@ import { Connection } from '@temporalio/client';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule {}
+export class BotModule { }

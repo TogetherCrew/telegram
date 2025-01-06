@@ -1,8 +1,9 @@
-import { Controller, Logger, UseInterceptors } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
+// import { MessagePattern, Payload } from '@nestjs/microservices';
 import { BotService } from './bot.service';
-import { TelegramAction } from '@app/common';
-import { EventsInterceptor } from '@app/common/rmq/interceptors/events.interceptor';
+// import { TelegramAction } from '@app/common';
+import { RabbitMQService } from './rabbitmq/rabbitmq.service';
+import { Event } from '@togethercrew.dev/tc-messagebroker';
 
 // interface MessagePayload {
 //   chat_id: number | string;
@@ -10,14 +11,26 @@ import { EventsInterceptor } from '@app/common/rmq/interceptors/events.intercept
 //   other: any;
 // }
 
-@Controller()
-@UseInterceptors(EventsInterceptor)
+@Injectable()
 export class BotController {
   private readonly logger = new Logger(BotController.name);
-  constructor(private readonly botService: BotService) {}
+  constructor(
+    private readonly rabbitmqService: RabbitMQService,
+    private readonly botService: BotService,
+  ) { }
 
-  @MessagePattern(TelegramAction.SEND_MESSAGE)
-  async sendMessage(@Payload() payload: any): Promise<void> {
+  onModuleInit() {
+    this.registerEvents();
+  }
+
+  private registerEvents() {
+    this.rabbitmqService.onEvent(
+      Event.TELEGRAM.SEND_MESSAGE,
+      this.sendMessage.bind(this),
+    );
+  }
+
+  async sendMessage(payload: Record<string, any>): Promise<void> {
     console.log('Payload', payload);
     // const { chat_id, text, other } = payload;
     // await this.botService.sendMessage(chat_id, text, other);
