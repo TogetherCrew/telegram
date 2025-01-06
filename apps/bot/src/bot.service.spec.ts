@@ -2,7 +2,6 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { BotService } from './bot.service';
-import { Services } from '@app/common';
 import { ConfigService } from '@nestjs/config';
 
 describe('BotService', () => {
@@ -12,24 +11,6 @@ describe('BotService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BotService,
-        {
-          provide: Services.EventStore.name,
-          useValue: {
-            emit: jest.fn(),
-          },
-        },
-        {
-          provide: Services.GraphStore.name,
-          useValue: {
-            emit: jest.fn(),
-          },
-        },
-        {
-          provide: Services.TGQuestionService.name,
-          useValue: {
-            emit: jest.fn(),
-          },
-        },
         {
           provide: ConfigService,
           useValue: {

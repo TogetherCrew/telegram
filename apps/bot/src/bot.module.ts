@@ -8,7 +8,6 @@ import {
   rmqConfig,
   RmqModule,
 } from '@app/common';
-import { Services } from '@app/common';
 import { BotController } from './bot.controller';
 import { TemporalModule } from 'nestjs-temporal';
 import { temporalConfig } from '@app/common/config/temporal.config';
@@ -22,7 +21,6 @@ import { Connection } from '@temporalio/client';
       isGlobal: true,
     }),
     RmqModule,
-    RmqModule.register(Services.TGQuestionService),
     TemporalModule.registerClientAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
@@ -44,4 +42,4 @@ import { Connection } from '@temporalio/client';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule {}
+export class BotModule { }

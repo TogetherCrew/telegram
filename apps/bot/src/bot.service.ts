@@ -1,7 +1,6 @@
-import { IgnoreEvent, Services, UpdateEvent } from '@app/common';
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { IgnoreEvent, UpdateEvent } from '@app/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy } from '@nestjs/microservices';
 import { WorkflowClient } from '@temporalio/client';
 import { API_CONSTANTS, Bot, Context, RawApi } from 'grammy';
 import { Other } from 'grammy/out/core/api';
@@ -14,8 +13,6 @@ export class BotService implements OnModuleInit {
   private readonly logger = new Logger(BotService.name);
 
   constructor(
-    @Inject(Services.TGQuestionService.name)
-    private readonly tgQuestionClient: ClientProxy,
     private readonly configService: ConfigService,
     @InjectTemporalClient()
     private readonly temporalClient: WorkflowClient,
