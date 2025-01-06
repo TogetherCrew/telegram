@@ -54,7 +54,7 @@ export class BotController {
     console.log('ctx', ctx);
     const message: string = payload.content.response.message;
 
-    await this.botService.sendMessage(ctx.message.chat.id, message, {
+    await this.botService.sendMessage(ctx.update.message.chat.id, message, {
       reply_parameters: {
         message_id: ctx.message.message_id,
       },
