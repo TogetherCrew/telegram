@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 // import { MessagePattern, Payload } from '@nestjs/microservices';
 import { BotService } from './bot.service';
 // import { TelegramAction } from '@app/common';
@@ -11,13 +11,13 @@ import { Event } from '@togethercrew.dev/tc-messagebroker';
 //   other: any;
 // }
 
-@Injectable()
+@Controller()
 export class BotController {
   private readonly logger = new Logger(BotController.name);
   constructor(
     private readonly rabbitmqService: RabbitMQService,
     private readonly botService: BotService,
-  ) {}
+  ) { }
 
   onModuleInit() {
     this.registerEvents();
