@@ -63,9 +63,13 @@ export class BotService implements OnModuleInit {
     text: string,
     other?: Other<RawApi, 'sendMessage', 'text' | 'chat_id'>,
   ): Promise<Message.TextMessage | null> {
-    const receipt = await this.bot.api.sendMessage(chat_id, text, other);
-    this.logger.log(`Message ${receipt.message_id} sent to ${receipt.chat.id}`);
-    return receipt;
+    try {
+      const receipt = await this.bot.api.sendMessage(chat_id, text, other);
+      this.logger.log(`Message ${receipt.message_id} sent to ${receipt.chat.id}`);
+      return receipt;
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   // Middleware to check if a user is an admin

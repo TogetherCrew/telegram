@@ -49,16 +49,20 @@ export class BotController {
 
   async sendMessage(payload: Payload): Promise<void> {
     console.log('Payload', payload);
+    try {
+      const ctx: Context = payload.content.metadata.ctx;
+      console.log('ctx', ctx);
+      const reply: string = payload.content.response.message;
+  
+      await this.botService.sendMessage(ctx.update.message.chat.id, reply, {
+        reply_parameters: {
+          message_id: ctx.update.message.message_id,
+        },
+      });
+      return;
+    } catch(error) {
+      console.error(error.message)
+    }
 
-    const ctx: Context = payload.content.metadata.ctx;
-    console.log('ctx', ctx);
-    const reply: string = payload.content.response.message;
-
-    await this.botService.sendMessage(ctx.update.message.chat.id, reply, {
-      reply_parameters: {
-        message_id: ctx.update.message.message_id,
-      },
-    });
-    return;
   }
 }
