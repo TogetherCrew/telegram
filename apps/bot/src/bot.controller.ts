@@ -34,7 +34,7 @@ export class BotController {
   constructor(
     private readonly rabbitmqService: RabbitMQService,
     private readonly botService: BotService,
-  ) { }
+  ) {}
 
   onModuleInit() {
     this.registerEvents();
@@ -48,21 +48,32 @@ export class BotController {
   }
 
   async sendMessage(payload: Payload): Promise<void> {
-    console.log('Payload', payload);
     try {
       const ctx: Context = payload.content.metadata.ctx;
-      console.log('ctx', ctx);
       const reply: string = payload.content.response.message;
-  
+
+      const timestamp = ctx.update.message.date;
+      const messageDate = new Date(timestamp * 1000);
+      const now = new Date();
+      const diff = now.getTime() - messageDate.getTime();
+      const diffInMinutes = diff / (1000 * 60);
+
+      if (diffInMinutes > 2) {
+        console.log(
+          'Skipping message from',
+          ctx.update.message.chat.id,
+          'because it is older than 2 minutes',
+        );
+        return;
+      }
       await this.botService.sendMessage(ctx.update.message.chat.id, reply, {
         reply_parameters: {
           message_id: ctx.update.message.message_id,
         },
       });
       return;
-    } catch(error) {
-      console.error(error.message)
+    } catch (error) {
+      console.error(error.message);
     }
-
   }
 }

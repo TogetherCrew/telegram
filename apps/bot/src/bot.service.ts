@@ -7,6 +7,8 @@ import { Other } from 'grammy/out/core/api';
 import { Message, Update } from 'grammy/types';
 import { InjectTemporalClient } from 'nestjs-temporal';
 
+const HIVEMIND_BLOCKLIST = ['-1002141367711'];
+
 @Injectable()
 export class BotService implements OnModuleInit {
   private bot: Bot;
@@ -65,10 +67,12 @@ export class BotService implements OnModuleInit {
   ): Promise<Message.TextMessage | null> {
     try {
       const receipt = await this.bot.api.sendMessage(chat_id, text, other);
-      this.logger.log(`Message ${receipt.message_id} sent to ${receipt.chat.id}`);
+      this.logger.log(
+        `Message ${receipt.message_id} sent to ${receipt.chat.id}`,
+      );
       return receipt;
     } catch (error) {
-      console.error(error.message)
+      console.error(error.message);
     }
   }
 
@@ -158,6 +162,11 @@ export class BotService implements OnModuleInit {
 
   protected processQuestion = async (ctx: Context) => {
     try {
+      if (HIVEMIND_BLOCKLIST.includes(ctx.chat.id.toString())) {
+        console.log('Skipping question from HIVEMIND for', ctx.chat.id);
+        return;
+      }
+
       await this.temporalClient.start('TelegramQuestionWorkflow', {
         taskQueue: this.configService.get<string>('temporal.queue'),
         args: [{ ctx }],
