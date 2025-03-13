@@ -167,11 +167,41 @@ export class BotService implements OnModuleInit {
         return;
       }
 
-      await this.temporalClient.start('TelegramQuestionWorkflow', {
-        taskQueue: this.configService.get<string>('temporal.queue'),
-        args: [{ ctx }],
-        workflowId: `telegram:question:${ctx.update.update_id}`,
-      });
+      const community = await this.temporalClient.execute(
+        'TelegramGetCommunityWorkflow',
+        {
+          taskQueue: 'TEMPORAL_QUEUE_LIGHT',
+          args: [{ chatId: ctx.chat.id }],
+          workflowId: `telegram:getcommunity:${ctx.update.update_id}`,
+        },
+      );
+      if (!community) {
+        console.log('No community found for', ctx.chat.id);
+        return;
+      }
+
+      const reply = await this.temporalClient.execute(
+        'AgenticHivemindTemporalWorkflow',
+        {
+          taskQueue: 'HIVEMIND_AGENT_QUEUE',
+          args: [
+            {
+              community_id: community.id,
+              query: ctx.update.message.text,
+              enable_answer_skipping: false,
+            },
+          ],
+          workflowId: `telegram:hivemind:${ctx.update.update_id}`,
+        },
+      );
+
+      if (!reply) {
+        console.log('No reply from hivemind.');
+        return;
+      }
+
+      console.log('Reply from hivemind:', reply);
+      await ctx.reply(reply);
     } catch (error) {
       console.error(error);
     }
