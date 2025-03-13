@@ -188,7 +188,7 @@ export class BotService implements OnModuleInit {
             {
               community_id: community.id,
               query: ctx.update.message.text,
-              enable_answer_skipping: false,
+              enable_answer_skipping: true,
             },
           ],
           workflowId: `telegram:hivemind:${ctx.update.update_id}`,
