@@ -200,8 +200,14 @@ export class BotService implements OnModuleInit {
         return;
       }
 
+      const other = {
+        reply_parameters: {
+          message_id: ctx.update.message.message_id,
+        },
+      };
+
       console.log('Reply from hivemind:', reply);
-      await ctx.reply(reply);
+      await ctx.reply(reply, other);
     } catch (error) {
       console.error(error);
     }
