@@ -195,7 +195,7 @@ export class BotService implements OnModuleInit {
         },
       );
 
-      if (!reply) {
+      if (!reply || reply.length === 0) {
         console.log('No reply from hivemind.');
         return;
       }
