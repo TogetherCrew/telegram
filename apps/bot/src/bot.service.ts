@@ -37,7 +37,8 @@ export class BotService implements OnModuleInit {
         try {
           if (
             event != UpdateEvent.CHAT_MEMBER &&
-            !ctx.update.message.from.is_bot
+            !ctx.update.message.from.is_bot &&
+            ctx.update.message.text.length > 0
           ) {
             this.processQuestion(ctx);
           }
