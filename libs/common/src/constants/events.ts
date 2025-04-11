@@ -9,7 +9,7 @@ export const UpdateEvent: FilterQueryDictionary = {
   MESSAGE_REACTION: 'message_reaction',
   EDITED_MESSAGE: 'edited_message',
   MESSAGE: 'message',
-  MIGRATE_TO_CHAT_ID: 'message.migrate_to_chat_id',
+  MIGRATE_TO_CHAT_ID: 'message:migrate_to_chat_id',
 };
 
 export const IgnoreEvent: FilterQueryDictionary = {
