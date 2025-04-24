@@ -251,7 +251,7 @@ export class BotService implements OnModuleInit {
           taskQueue: 'TEMPORAL_QUEUE_PYTHON_LIGHT',
           args: [
             {
-              platform_id: 'telegram',
+              platform_id: platform.id,
               community_id: community.id,
               start_date: new Date().toISOString().split('T')[0],
               end_date: null,
