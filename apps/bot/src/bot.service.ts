@@ -23,6 +23,7 @@ export class BotService implements OnModuleInit {
 
     this.bot.command('start', this.start);
     this.bot.command('verify', this.isAdmin, this.verify);
+    this.bot.command('summary', this.getSummary);
 
     Object.values(IgnoreEvent).map((event) => {
       this.bot.on(event, () => {
@@ -59,6 +60,10 @@ export class BotService implements OnModuleInit {
     await this.bot.api.setMyCommands([
       { command: 'start', description: 'Get started with the TogetherCrewBot' },
       { command: 'verify', description: 'Verify your group.' },
+      {
+        command: 'summary',
+        description: 'Get the summary of about the last day.',
+      },
     ]);
   }
 
@@ -210,6 +215,49 @@ export class BotService implements OnModuleInit {
 
       console.log('Reply from hivemind:', reply);
       await ctx.reply(reply, other);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  protected getSummary = async (ctx: Context) => {
+    try {
+      const community = await this.temporalClient.execute(
+        'TelegramGetCommunityWorkflow',
+        {
+          taskQueue: 'TEMPORAL_QUEUE_LIGHT',
+          args: [{ chatId: ctx.chat.id }],
+          workflowId: `telegram:getcommunity:${ctx.update.update_id}`,
+        },
+      );
+      if (!community) {
+        console.log('No community found for', ctx.chat.id);
+        return;
+      }
+
+      const summary = await this.temporalClient.execute(
+        'TelegramSummariesWorkflow',
+        {
+          taskQueue: 'TEMPORAL_QUEUE_PYTHON_LIGHT',
+          args: [
+            {
+              platform_id: 'telegram',
+              community_id: community.id,
+              start_date: new Date().toISOString().split('T')[0],
+              end_date: null,
+              extract_text_only: true,
+            },
+          ],
+          workflowId: `telegram:summaries:${ctx.update.update_id}`,
+        },
+      );
+
+      if (!summary || summary.length === 0) {
+        console.log('No summary found for', ctx.chat.id);
+        return;
+      }
+
+      await ctx.reply(summary);
     } catch (error) {
       console.error(error);
     }
