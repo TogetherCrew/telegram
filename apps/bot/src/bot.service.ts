@@ -60,10 +60,7 @@ export class BotService implements OnModuleInit {
     await this.bot.api.setMyCommands([
       { command: 'start', description: 'Get started with the TogetherCrewBot' },
       { command: 'verify', description: 'Verify your group.' },
-      {
-        command: 'summary',
-        description: 'Get the summary of about the last day.',
-      },
+      { command: 'summary', description: 'Summary of the last 24 hours.' },
     ]);
   }
 
@@ -232,6 +229,19 @@ export class BotService implements OnModuleInit {
       );
       if (!community) {
         console.log('No community found for', ctx.chat.id);
+        return;
+      }
+
+      const platform = await this.temporalClient.execute(
+        'TelegramGetPlatformWorkflow',
+        {
+          taskQueue: 'TEMPORAL_QUEUE_LIGHT',
+          args: [{ chatId: ctx.chat.id }],
+          workflowId: `telegram:getplatform:${ctx.update.update_id}`,
+        },
+      );
+      if (!platform) {
+        console.log('No platform found for', ctx.chat.id);
         return;
       }
 
