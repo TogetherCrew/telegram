@@ -253,7 +253,7 @@ export class BotService implements OnModuleInit {
             {
               platform_id: platform.id,
               community_id: community.id,
-              start_date: new Date().toISOString().split('T')[0],
+              start_date: null,
               end_date: null,
               extract_text_only: true,
             },
