@@ -246,7 +246,7 @@ export class BotService implements OnModuleInit {
       }
 
       const summary = await this.temporalClient.execute(
-        'TelegramSummariesWorkflow',
+        'PlatformSummariesWorkflow',
         {
           taskQueue: 'TEMPORAL_QUEUE_PYTHON_LIGHT',
           args: [
