@@ -8,6 +8,7 @@ import { TemporalModule } from 'nestjs-temporal';
 import { temporalConfig } from '@app/common/config/temporal.config';
 import { Connection } from '@temporalio/client';
 import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
+import { HandlersModule } from './handlers/handlers.module';
 
 @Module({
   imports: [
@@ -17,20 +18,14 @@ import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
       isGlobal: true,
     }),
     RabbitMQModule,
+    HandlersModule,
     TemporalModule.registerClientAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
         const uri = config.get('temporal.uri');
-        console.log('uri', uri);
-        let connection: Connection;
-        try {
-          connection = await Connection.connect({
-            address: uri,
-          });
-        } catch (error) {
-          console.error('Failed to connect to Temporal:', error);
-          throw error;
-        }
+        const connection: Connection = await Connection.connect({
+          address: uri,
+        });
         return { connection };
       },
     }),
@@ -38,4 +33,4 @@ import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule {}
+export class BotModule { }

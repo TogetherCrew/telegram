@@ -33,20 +33,3 @@ services:
       timeout: 10s
       retries: 2
       start_period: 30s
-
-  #   telegram-bot:
-  #     <<: [ *telegram-common ]
-  #     container_name: telegram-bot
-  #     command: npm run start:dev bot
-
-  question-service-ext:
-    image: ghcr.io/togethercrew/question-service:main
-    platform: linux/x86_64
-    ports:
-      - 9999:80
-
-# volumes:
-#   mongo_data:
-#   neo4j_data:
-#   neo4j_import:
-#   neo4j_plugins:
