@@ -43,7 +43,7 @@ export class BotService implements OnModuleInit {
     Object.values(UpdateEvent).map((event) => {
       this.bot.on(event, (ctx: Context) => {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
-        this.updateHandler.handle(ctx);
+        this.updateHandler.handle(ctx, event);
         this.questionHandler.handle(ctx);
         return;
       });

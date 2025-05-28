@@ -11,6 +11,6 @@ export abstract class BaseHandler {
     @InjectTemporalClient()
     protected readonly temporalClient: WorkflowClient,
     protected readonly configService: ConfigService,
-  ) { }
+  ) {}
   abstract handle(ctx: Context, event?: FilterQuery): Promise<void>;
 }
