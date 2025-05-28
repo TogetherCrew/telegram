@@ -11,4 +11,4 @@ import { SummaryHandler } from './summary.handler';
   providers: [QuestionHandler, UpdateHandler, VerifyHandler, SummaryHandler],
   exports: [QuestionHandler, UpdateHandler, VerifyHandler, SummaryHandler],
 })
-export class HandlersModule { }
+export class HandlersModule {}

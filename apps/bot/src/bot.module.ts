@@ -33,4 +33,4 @@ import { HandlersModule } from './handlers/handlers.module';
   controllers: [BotController],
   providers: [BotService],
 })
-export class BotModule { }
+export class BotModule {}
