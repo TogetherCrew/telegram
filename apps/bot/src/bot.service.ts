@@ -46,9 +46,7 @@ export class BotService implements OnModuleInit {
         this.updateHandler.handle(ctx, event);
         this.questionHandler.handle(ctx);
 
-        const text = `No, there is no specific report provided that is more recent than the request made on June 11, 2025. [[1]](https://t.me/c/1997495218/1073) [[2]](https://t.me/c/1997495218/1090) [[3]](https://t.me/c/1997495218/763)
-
-*This message was generated using the [TogetherCrew Q&A Agent](https://togethercrew.com).*`;
+        const text = `No, there is no specific report provided that is more recent than the request made on June 11, 2025\\. [[1]](https://t\\.me/c/1997495218/1073) [[2]](https://t\\.me/c/1997495218/1090) [[3]](https://t\\.me/c/1997495218/763)\n\n*This message was generated using the [TogetherCrew Q&A Agent](https://togethercrew\\.com)\\.*`;
 
         ctx.reply(text, { parse_mode: 'MarkdownV2' });
 
