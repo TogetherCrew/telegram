@@ -45,6 +45,11 @@ export class BotService implements OnModuleInit {
         this.logger.log(`Received ${event} from ${ctx.chat.id}`);
         this.updateHandler.handle(ctx, event);
         this.questionHandler.handle(ctx);
+
+        const text = `No, there is no specific report provided that is more recent than the request made on June 11, 2025. [[1]](https://t.me/c/1997495218/1073) [[2]](https://t.me/c/1997495218/1090) [[3]](https://t.me/c/1997495218/763)`;
+
+        ctx.reply(text, { parse_mode: 'MarkdownV2' });
+
         return;
       });
     });
