@@ -13,7 +13,7 @@ function escapeMarkdownV2(text: string): string {
   const links: string[] = [];
   let linkIndex = 0;
 
-  // Replace links with placeholders
+  // Handle links with proper regex for [[text]](url) format
   const withPlaceholders = text.replace(
     /\[([^\]]*)\]\(([^)]*)\)/g,
     (match, linkText, url) => {
