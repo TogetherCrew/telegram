@@ -9,6 +9,31 @@ import { UpdateHandler } from './handlers/update.handler';
 import { VerifyHandler } from './handlers/verify.handler';
 import { SummaryHandler } from './handlers/summary.handler';
 
+function escapeMarkdownV2(text: string): string {
+  const links: string[] = [];
+  let linkIndex = 0;
+
+  // Replace links with placeholders
+  const withPlaceholders = text.replace(
+    /\[([^\]]*)\]\(([^)]*)\)/g,
+    (match, linkText, url) => {
+      const escapedText = linkText.replace(/[_*\[\]~`>#+=|{}.!-]/g, '\\$&');
+      const escapedUrl = url.replace(/[_*~`>#+=|{}.!-]/g, '\\$&');
+      links[linkIndex] = `[${escapedText}](${escapedUrl})`;
+      return `__LINK_${linkIndex++}__`;
+    },
+  );
+
+  // Escape remaining characters
+  const escaped = withPlaceholders.replace(/[_*\[\]()~`>#+=|{}.!-]/g, '\\$&');
+
+  // Restore links
+  return escaped.replace(
+    /__LINK_(\d+)__/g,
+    (match, index) => links[parseInt(index)],
+  );
+}
+
 @Injectable()
 export class BotService implements OnModuleInit {
   private bot: Bot;
@@ -46,9 +71,14 @@ export class BotService implements OnModuleInit {
         this.updateHandler.handle(ctx, event);
         this.questionHandler.handle(ctx);
 
-        const text = `No, there is no specific report provided that is more recent than the request made on June 11, 2025\\. [\\[1\\]](https://t\\.me/c/1997495218/1073) [\\[2\\]](https://t\\.me/c/1997495218/1090) [\\[3\\]](https://t\\.me/c/1997495218/763)\n\n*This message was generated using the [TogetherCrew Q&A Agent](https://togethercrew\\.com)\\.*`;
+        // const text = `No, there is no specific report provided that is more recent than the request made on June 11, 2025\\. [\\[1\\]](https://t\\.me/c/1997495218/1073) [\\[2\\]](https://t\\.me/c/1997495218/1090) [\\[3\\]](https://t\\.me/c/1997495218/763)\n\n*This message was generated using the [TogetherCrew Q&A Agent](https://togethercrew\\.com)\\.*`;
+        const originalText = `No, there is no specific report provided that is more recent than the request made on June 11, 2025. [[1]](https://t.me/c/1997495218/1073) [[2]](https://t.me/c/1997495218/1090) [[3]](https://t.me/c/1997495218/763)
 
-        ctx.reply(text, { parse_mode: 'MarkdownV2' });
+*This message was generated using the [TogetherCrew Q&A Agent](https://togethercrew.com).*`;
+
+        const escapedText = escapeMarkdownV2(originalText);
+
+        ctx.reply(escapedText, { parse_mode: 'MarkdownV2' });
 
         return;
       });
