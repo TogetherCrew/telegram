@@ -40,6 +40,7 @@ export class QuestionHandler extends BaseHandler {
           reply_parameters: {
             message_id: update.message.message_id,
           },
+          parse_mode: 'MarkdownV2' as const,
         };
 
         this.logger.log('Reply from hivemind:', result);
