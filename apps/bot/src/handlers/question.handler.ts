@@ -4,10 +4,6 @@ import { UpdateEvent } from '@app/common';
 
 const HIVEMIND_BLOCKLIST = ['-1002141367711']; // TODO: Move this to config
 
-function escapeMarkdownV2(text) {
-  return text.replace(/[_*~`>#+=|{}.!-]/g, '\\$&');
-}
-
 export class QuestionHandler extends BaseHandler {
   async handle(ctx: Context, event?: FilterQuery): Promise<void> {
     try {
@@ -48,7 +44,7 @@ export class QuestionHandler extends BaseHandler {
         };
 
         this.logger.log('Reply from hivemind:', result);
-        await ctx.reply(escapeMarkdownV2(result), other);
+        await ctx.reply(result, other);
       }
     } catch (error) {
       this.logger.error(error);
