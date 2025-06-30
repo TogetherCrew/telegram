@@ -32,7 +32,7 @@ export class SummaryHandler extends BaseHandler {
     } catch (error) {
       // this.logger.error(error);
       console.error('SummaryHandler error', error);
-      await ctx.reply('Something unexpected happened. Please try again later.');
+      // await ctx.reply('Something unexpected happened. Please try again later.');
     }
   }
 }

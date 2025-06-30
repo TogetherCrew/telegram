@@ -48,7 +48,7 @@ export class QuestionHandler extends BaseHandler {
       }
     } catch (error) {
       this.logger.error(error);
-      await ctx.reply('Something unexpected happened. Please try again later.');
+      // await ctx.reply('Something unexpected happened. Please try again later.');
     }
   }
 }
