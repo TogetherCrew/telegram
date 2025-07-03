@@ -2,7 +2,7 @@ import { Context, FilterQuery } from 'grammy';
 import { BaseHandler } from './base.handler';
 import { UpdateEvent } from '@app/common';
 
-const HIVEMIND_BLOCKLIST = ['-1002141367711']; // TODO: Move this to config
+const HIVEMIND_BLOCKLIST = ['-1002141367711', '-1002477739609']; // TODO: Move this to config
 
 export class QuestionHandler extends BaseHandler {
   async handle(ctx: Context, event?: FilterQuery): Promise<void> {
